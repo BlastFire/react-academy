@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Route } from 'react-router-dom'
 import './App.css';
-import CourseForm from './components/CourseForm'
+import Header from './components/Header'
+import Home from './components/Home'
+import Courses from './components/Courses'
 
 class App extends Component {
+
+  // submit(e) {
+  //   console.log(e)
+  // }
+
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+        <div className="Header">
+          <Header />
         </div>
-        <div className="Courses-Page">
-          <CourseForm />
-        </div>
-      </div>
+        <Route exact path="/" component={Home} />
+        <Route path="/courses" component={Courses} />
+      </div >
     );
   }
 }

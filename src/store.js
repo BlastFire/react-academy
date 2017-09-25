@@ -4,10 +4,12 @@ import thunk from 'redux-thunk'
 import { reducer as formReducer } from 'redux-form'
 //import { reactReduxFirebase, firebaseStateReducer } from 'react-redux-firebase'
 import testReducer from './reducers/testreducer'
+import courseReducer from './reducers/courseReducer'
 
 
 const reducer = combineReducers({
-    testReducer,
+    test: testReducer,
+    crs: courseReducer,
     form: formReducer
 })
 
