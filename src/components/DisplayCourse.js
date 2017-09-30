@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
     Card, CardImg, CardText, CardBlock, CardLink,
-    CardTitle, CardSubtitle, Button
+    CardTitle, CardSubtitle, Button, CardHeader
 } from 'reactstrap';
 import { fetchCourse } from '../reducers/courseReducer'
 
@@ -28,15 +28,27 @@ class DisplayCourse extends Component {
             return <p>Loading...</p>;
         }
 
+        const { curCourse } = this.props
+
         return (
             // <h1>DISPLAY COURSE {this.props.curCourse.name}</h1>
             <div>
                 <Card>
+                    <CardHeader tag="h2">{curCourse.name}</CardHeader>
+                    <CardImg top width="50%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />
                     <CardBlock>
-                        <CardTitle>Card title</CardTitle>
-                        <CardSubtitle>Card subtitle</CardSubtitle>
-                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                        <Button>Button</Button>
+                        <CardTitle>Card teacher name</CardTitle>
+                        <CardText>{curCourse.teacherName}</CardText>
+                        <CardTitle>Card teacher email</CardTitle>
+                        <CardText>{curCourse.teacherEmail}</CardText>
+                        <CardTitle>Language</CardTitle>
+                        <CardText>{curCourse.language}</CardText>
+                        <CardTitle>Description</CardTitle>
+                        <CardText>{curCourse.description}</CardText>
+                        <CardTitle>Last Update Date</CardTitle>
+                        <CardText>{curCourse.lastUpdateDate}</CardText>
+                        <CardTitle>Rating</CardTitle>
+                        <CardText>{curCourse.rating}</CardText>
                     </CardBlock>
                 </Card>
             </div>

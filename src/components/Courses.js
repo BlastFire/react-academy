@@ -9,7 +9,7 @@ const Courses = ({ match }) => {
 
     return (
         <div className='Courses'>
-            <Container fluid>
+            <Container>
                 <Row>
                     <Col xs="3">
                         <CourseList />

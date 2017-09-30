@@ -4,7 +4,7 @@ import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 
 const Header = (props) => (
     <div>
-        <Navbar color="info" light>
+        <Navbar color="info" light toggleable>
             <NavbarBrand tag={Link} to="/">Home</NavbarBrand>
             <Nav className="mr-auto" navbar>
                 <NavItem>
