@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { ListGroup } from 'reactstrap';
-import CourseListItem from './CourseListItem'
+import { ListGroup } from 'reactstrap'
+import { withRouter } from 'react-router-dom'
 import { fetchCourses } from '../reducers/courseReducer'
+import CourseListItem from './CourseListItem'
+import CourseAdd from './CourseAdd'
 
 class CourseList extends Component {
 
@@ -10,10 +12,15 @@ class CourseList extends Component {
         this.props.fetchCourses()
     }
 
+    onCourseAddHandler = (e) => {
+        this.props.history.push('/courses/add')
+    }
+
     render() {
 
         return (
             <ListGroup>
+                <CourseAdd onClick={this.onCourseAddHandler} />
                 {
                     this.props.courses.map(course => <CourseListItem key={course.id} {...course} />)
                 }
@@ -24,8 +31,8 @@ class CourseList extends Component {
 
 }
 
-export default connect(
+export default withRouter(connect(
     (state) => ({ courses: state.crs.courses }),
     { fetchCourses }
-)(CourseList)
+)(CourseList))
 

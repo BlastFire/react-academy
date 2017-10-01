@@ -1,0 +1,6 @@
+1. ReactStars have to be clicked twice to update the UI.
+happens when we call Field's onChange prop with the updated value
+otherwise UI is properly updating, but we cant update form state with the new value
+lib's onClick method is called everytime though ;(
+
+

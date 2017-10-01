@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
-    Card, CardImg, CardText, CardBlock, CardLink,
-    CardTitle, CardSubtitle, Button, CardHeader
+    Card, CardImg, CardText, CardBlock, CardTitle, CardHeader
 } from 'reactstrap';
 import { fetchCourse } from '../reducers/courseReducer'
 
@@ -14,6 +13,7 @@ class DisplayCourse extends Component {
     componentWillReceiveProps() { }
 
     render() {
+
         /*
         fixed a problem, when user directly types the route in browser instead of clicking on the navigation "link".
         In that case, rendering of this component occurs, BEFORE loading the data from storage with redux action creator,
@@ -31,7 +31,6 @@ class DisplayCourse extends Component {
         const { curCourse } = this.props
 
         return (
-            // <h1>DISPLAY COURSE {this.props.curCourse.name}</h1>
             <div>
                 <Card>
                     <CardHeader tag="h2">{curCourse.name}</CardHeader>

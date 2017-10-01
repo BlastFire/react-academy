@@ -1,61 +1,89 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Field, reduxForm } from 'redux-form'
-//import { connect } from 'react-redux'
-
-const renderField = ({ input, label, type, meta: { touched, error } }) => {
-    return (
-        <div>
-            <label>
-                {label}
-            </label>
-            <div>
-                <input {...input} placeholder={label} type={type} />
-                {touched &&
-                    error &&
-                    <span>
-                        {error}
-                    </span>}
-            </div>
-        </div>
-    )
-}
+import { Col, Form, FormGroup, Label } from 'reactstrap'
+import { CommonInput } from './helpers/CommonInput'
+import { StarInput } from './helpers/StarInput'
 
 let CourseForm = props => {
 
     const { handleSubmit } = props
 
     return (
-        <form>
-            <div>
-                <label htmlFor="name">Name</label>
-                <Field name="name" type="text" component={renderField} />
+        <div>
+            <h2> Adding a course </h2>
+            <Form>
+                <FormGroup row>
+                    <Label for="name" sm={2}>Name</Label>
+                    <Col sm={10}>
+                        <Field name="name" type="text" component={CommonInput} />
+                    </Col>
+                </FormGroup>
 
-                <label htmlFor="category">Category</label>
-                <Field name="category" type="text" component={renderField} />
+                <FormGroup row>
+                    <Label for="category" sm={2}>Category</Label>
+                    <Col sm={10}>
+                        <Field name="category" type="text" component={CommonInput} />
+                    </Col>
+                </FormGroup>
 
-                <label htmlFor="teacherName">Teacher's name</label>
-                <Field name="teacherName" type="text" component={renderField} />
+                <FormGroup row>
+                    <Label for="teacherName" sm={2}>Teacher's name</Label>
+                    <Col sm={10}>
+                        <Field name="teacherName" type="text" component={CommonInput} />
+                    </Col>
+                </FormGroup>
 
-                <label htmlFor="teacherEmail">Teacher's email</label>
-                <Field name="teacherEmail" type="text" component={renderField} />
+                <FormGroup row>
+                    <Label for="teacherEmail" sm={2}>Teacher's email</Label>
+                    <Col sm={10}>
+                        <Field name="teacherEmail" type="email" component={CommonInput} />
+                    </Col>
+                </FormGroup>
 
-                <label htmlFor="description">Description</label>
-                <Field name="description" component="textarea" />
-                <br />
+                <FormGroup row>
+                    <Label for="description" sm={2}>Description</Label>
+                    <Col sm={10}>
+                        <Field name='description' type='email' component='textarea' />
+                    </Col>
+                </FormGroup>
 
-                <label htmlFor="language">Language</label>
-                <div>
-                    <Field name="language" component="select">
-                        <option />
-                        <option value="BG">Bulgarian</option>
-                        <option value="GB">English</option>
-                        <option value="FR">French</option>
-                    </Field>
-                </div>
+                <FormGroup row>
+                    <Label for="language" sm={2}>Language</Label>
+                    <Col sm={10}>
+                        <Field component={CommonInput} type="select" name="language">
+                            <option value="">--Select--</option>
+                            <option value="BG">Bulgarian</option>
+                            <option value="GB">English</option>
+                            <option value="FR">French</option>
+                        </Field>
+                    </Col>
+                </FormGroup>
 
-                <button onClick={handleSubmit(data => console.log(data))} type="submit">Submit</button>
-            </div>
-        </form>
+                <FormGroup row>
+                    <Label for="courseVisibility" sm={2}>Visibility</Label>
+                    <Col sm={{ size: 10 }}>
+                        <Field name="visbility" component="input" type="checkbox" />{' '}
+                        Set this course invisible for non-auth users
+                    </Col>
+                </FormGroup>
+
+                <FormGroup row>
+                    <Label for="rating" sm={2}>Rating</Label>
+                    <Col sm={{ size: 10 }}>
+                        <Field name="rating" component={StarInput} />
+                    </Col>
+                </FormGroup>
+
+                <FormGroup row>
+                    <Label for="file" sm={2}>Course image</Label>
+                    <Col sm={10}>
+                        <Field component={CommonInput} type="file" name="videoFile" />
+                    </Col>
+                </FormGroup>
+
+                <button className="btn btn-primary" onClick={handleSubmit(data => console.log(data))} type="submit">Submit</button>
+            </Form>
+        </div >
     )
 }
 

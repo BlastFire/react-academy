@@ -1,9 +1,10 @@
 import React from 'react'
 import { Container, Row, Col } from 'reactstrap';
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import './css/Courses.css'
 import CourseList from './CourseList'
 import DisplayCourse from './DisplayCourse'
+import CourseForm from './CourseForm'
 
 const Courses = ({ match }) => {
 
@@ -15,9 +16,12 @@ const Courses = ({ match }) => {
                         <CourseList />
                     </Col>
                     <Col xs="9">
-                        <Route path={`${match.url}/:courseId`} render={({ match }) => (
-                            <DisplayCourse courseId={match.params.courseId} />
-                        )} />
+                        <Switch>
+                            <Route exact path="/courses/add" component={CourseForm} />
+                            <Route path={`${match.url}/:courseId`} render={({ match }) => (
+                                <DisplayCourse courseId={match.params.courseId} />
+                            )} />
+                        </Switch>
                     </Col>
                 </Row>
             </Container>

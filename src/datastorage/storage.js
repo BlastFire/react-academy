@@ -3,6 +3,7 @@ const data = [
     {
         id: 1,
         name: 'Course1',
+        category: 'Js',
         teacherName: 'Teacher Name1',
         teacherEmail: 'teacher@domain.com',
         description: 'course 1 description',
@@ -16,6 +17,7 @@ const data = [
     {
         id: 2,
         name: 'Course2',
+        category: 'Java',
         teacherName: 'Teacher Name2',
         teacherEmail: 'teacher@domain.com',
         description: 'course 2 description',
