@@ -4,6 +4,24 @@ import { Col, Form, FormGroup, Label } from 'reactstrap'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 
+const validate = vals => {
+    const errors = {}
+
+    if (!vals.cName) {
+        errors.cName = 'Required'
+    } else if (vals.cName.length > 25) {
+        errors.cName = 'Must be 25 characters or less'
+    }
+
+    if (!vals.category) {
+        errors.category = 'Required'
+    } else if (vals.category.length > 25) {
+        errors.category = 'Must be 25 characters or less'
+    }
+
+    return errors
+}
+
 let CourseForm = props => {
 
     const { handleSubmit } = props
@@ -13,9 +31,9 @@ let CourseForm = props => {
             <h2> Adding a course </h2>
             <Form>
                 <FormGroup row>
-                    <Label for="name" sm={2}>Name</Label>
+                    <Label for="cName" sm={2}>Name</Label>
                     <Col sm={10}>
-                        <Field name="name" type="text" component={CommonInput} />
+                        <Field name="cName" type="text" component={CommonInput} />
                     </Col>
                 </FormGroup>
 
@@ -92,7 +110,8 @@ let CourseForm = props => {
 // )(CourseForm)
 
 CourseForm = reduxForm({
-    form: 'courseForm'
+    form: 'courseForm',
+    validate
 })(CourseForm)
 
 export default CourseForm
