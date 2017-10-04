@@ -3,24 +3,13 @@ import { Field, reduxForm } from 'redux-form'
 import { Col, Form, FormGroup, Label } from 'reactstrap'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
+import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
 
-const validate = vals => {
-    const errors = {}
+//validation setup
+const vMaxLength25 = vMaxLength(25)
+const vMaxLength15 = vMaxLength(15)
+const vMaxLength50 = vMaxLength(50)
 
-    if (!vals.cName) {
-        errors.cName = 'Required'
-    } else if (vals.cName.length > 25) {
-        errors.cName = 'Must be 25 characters or less'
-    }
-
-    if (!vals.category) {
-        errors.category = 'Required'
-    } else if (vals.category.length > 25) {
-        errors.category = 'Must be 25 characters or less'
-    }
-
-    return errors
-}
 
 let CourseForm = props => {
 
@@ -31,44 +20,44 @@ let CourseForm = props => {
             <h2> Adding a course </h2>
             <Form>
                 <FormGroup row>
-                    <Label for="cName" sm={2}>Name</Label>
+                    <Label for="cName" sm={2}>Course Name</Label>
                     <Col sm={10}>
-                        <Field name="cName" type="text" component={CommonInput} />
+                        <Field name="cName" type="text" component={CommonInput} validate={[vRequired, vMaxLength25]} />
                     </Col>
                 </FormGroup>
 
                 <FormGroup row>
                     <Label for="category" sm={2}>Category</Label>
                     <Col sm={10}>
-                        <Field name="category" type="text" component={CommonInput} />
+                        <Field name="category" type="text" component={CommonInput} validate={[vRequired, vMaxLength15]} />
                     </Col>
                 </FormGroup>
 
                 <FormGroup row>
                     <Label for="teacherName" sm={2}>Teacher's name</Label>
                     <Col sm={10}>
-                        <Field name="teacherName" type="text" component={CommonInput} />
+                        <Field name="teacherName" type="text" component={CommonInput} validate={[vRequired, vMaxLength15]} />
                     </Col>
                 </FormGroup>
 
                 <FormGroup row>
                     <Label for="teacherEmail" sm={2}>Teacher's email</Label>
                     <Col sm={10}>
-                        <Field name="teacherEmail" type="email" component={CommonInput} />
+                        <Field name="teacherEmail" type="email" component={CommonInput} validate={[vRequired, vEmail]} />
                     </Col>
                 </FormGroup>
 
                 <FormGroup row>
                     <Label for="description" sm={2}>Description</Label>
                     <Col sm={10}>
-                        <Field name='description' type='email' component='textarea' />
+                        <Field name='description' type='email' component='textarea' validate={[vRequired, vMaxLength50]} />
                     </Col>
                 </FormGroup>
 
                 <FormGroup row>
                     <Label for="language" sm={2}>Language</Label>
                     <Col sm={10}>
-                        <Field component={CommonInput} type="select" name="language">
+                        <Field component={CommonInput} type="select" name="language" >
                             <option value="">--Select--</option>
                             <option value="BG">Bulgarian</option>
                             <option value="GB">English</option>
@@ -110,8 +99,7 @@ let CourseForm = props => {
 // )(CourseForm)
 
 CourseForm = reduxForm({
-    form: 'courseForm',
-    validate
+    form: 'courseForm'
 })(CourseForm)
 
 export default CourseForm
