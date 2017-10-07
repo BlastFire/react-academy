@@ -1,5 +1,5 @@
 
-const data = [
+export const courseData = [
     {
         id: 1,
         name: 'Course1',
@@ -12,7 +12,6 @@ const data = [
         rating: 1,
         visible: true,
         lastUpdateDate: '11/11/11'
-
     },
     {
         id: 2,
@@ -27,8 +26,11 @@ const data = [
         visible: true,
         creationDate: '10/10/10',
         lastUpdateDate: '11/11/11'
-
     }
 ]
 
-export default data
+export const configLanguageData = [
+    { code: 'BG', value: 'Bulgarian' },
+    { code: 'GB', value: 'English' },
+    { code: 'FR', value: 'French' }
+]

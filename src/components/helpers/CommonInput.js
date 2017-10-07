@@ -4,18 +4,26 @@ import { Input } from 'reactstrap'
 // const adaptFileEventToValue = delegate =>
 //     e => delegate(e.target.files[0])
 
-export const CommonInput = ({ type, input: { value: omitValue, onChange, onBlur, ...inputProps, }, meta: { touched, error } }) => {
+export const CommonInput = ({ type, textarea, input, meta: { touched, error }, ...props }) => {
+
+    const textareaType = <textarea onChange={input.onChange} onBlur={input.onBlur} type={type} {...props} />
+    const inputType = <Input onChange={input.onChange} onBlur={input.onBlur} type={type} {...props} />
+    const errorType = touched && (error && <span>{error}</span>)
+
+    if (textarea) {
+        return (
+            <div>
+                {textareaType}
+                <br />
+                {errorType}
+            </div>
+        )
+    }
+
     return (
         <div>
-            <Input
-                onChange={onChange}
-                onBlur={onBlur}
-                type={type}
-                {...inputProps}
-            />
-            {
-                touched && (error && <span>{error}</span>)
-            }
+            {inputType}
+            {errorType}
         </div>
     )
 }
