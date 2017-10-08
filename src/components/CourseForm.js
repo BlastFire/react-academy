@@ -6,6 +6,7 @@ import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
 import { fetchConfigLanguages } from '../reducers/courseReducer'
+import { addCourse } from '../lib/courseFakeService'
 
 //validation setup
 const vMaxLength25 = vMaxLength(25)
@@ -26,9 +27,9 @@ class CourseForm extends Component {
                 <h2> Adding a course </h2>
                 <Form>
                     <FormGroup row>
-                        <Label for="cName" sm={2}>Course Name</Label>
+                        <Label for="name" sm={2}>Course Name</Label>
                         <Col sm={10}>
-                            <Field name="cName" type="text" component={CommonInput} validate={[vRequired, vMaxLength25]} />
+                            <Field name="name" type="text" component={CommonInput} validate={[vRequired, vMaxLength25]} />
                         </Col>
                     </FormGroup>
 
@@ -49,7 +50,7 @@ class CourseForm extends Component {
                     <FormGroup row>
                         <Label for="teacherEmail" sm={2}>Teacher's email</Label>
                         <Col sm={10}>
-                            <Field name="teacherEmail" type="email" component={CommonInput} validate={[vRequired, vEmail]} />
+                            <Field name="teacherEmail" type="email" component={CommonInput} validate={[vRequired]} />
                         </Col>
                     </FormGroup>
 
@@ -73,9 +74,9 @@ class CourseForm extends Component {
                     </FormGroup>
 
                     <FormGroup row>
-                        <Label for="courseVisibility" sm={2}>Visibility</Label>
+                        <Label for="visible" sm={2}>Visibility</Label>
                         <Col sm={{ size: 10 }}>
-                            <Field name="visbility" component="input" type="checkbox" />{' '}
+                            <Field name="visible" component="input" type="checkbox" />{' '}
                             Set this course invisible for non-auth users
                     </Col>
                     </FormGroup>
@@ -88,13 +89,13 @@ class CourseForm extends Component {
                     </FormGroup>
 
                     <FormGroup row>
-                        <Label for="file" sm={2}>Course image</Label>
+                        <Label for="image" sm={2}>Course image</Label>
                         <Col sm={10}>
-                            <Field component={CommonInput} type="file" name="videoFile" />
+                            <Field component={CommonInput} type="file" name="image" />
                         </Col>
                     </FormGroup>
 
-                    <button className="btn btn-primary" onClick={handleSubmit(data => console.log(data))} type="submit">Submit</button>
+                    <button className="btn btn-primary" onClick={handleSubmit(data => addCourse(data))} type="submit">Submit</button>
                 </Form>
             </div >
         )

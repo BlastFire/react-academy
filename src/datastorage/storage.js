@@ -1,5 +1,5 @@
 
-export const courseData = [
+export let courseData = [
     {
         id: 1,
         name: 'Course1',
@@ -7,11 +7,12 @@ export const courseData = [
         teacherName: 'Teacher Name1',
         teacherEmail: 'teacher@domain.com',
         description: 'course 1 description',
-        language: 'English',
+        language: 'FR',
         image: 'image1.jpg',
         rating: 1,
         visible: true,
-        lastUpdateDate: '11/11/11'
+        creationDate: 1507486008447,
+        lastUpdateDate: 1507486008447
     },
     {
         id: 2,
@@ -20,12 +21,12 @@ export const courseData = [
         teacherName: 'Teacher Name2',
         teacherEmail: 'teacher@domain.com',
         description: 'course 2 description',
-        language: 'English',
+        language: 'EN',
         image: 'image2.jpg',
         rating: 3,
         visible: true,
-        creationDate: '10/10/10',
-        lastUpdateDate: '11/11/11'
+        creationDate: 1507486008447,
+        lastUpdateDate: 1507486008447
     }
 ]
 
