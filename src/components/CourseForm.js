@@ -5,7 +5,7 @@ import { Col, Form, FormGroup, Label } from 'reactstrap'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
-import { fetchConfigLanguages } from '../reducers/courseReducer'
+import { fetchConfigLanguages, addCourseA } from '../reducers/courseReducer'
 import { addCourse } from '../lib/courseFakeService'
 
 //validation setup
@@ -95,7 +95,7 @@ class CourseForm extends Component {
                         </Col>
                     </FormGroup>
 
-                    <button className="btn btn-primary" onClick={handleSubmit(data => addCourse(data))} type="submit">Submit</button>
+                    <button className="btn btn-primary" onClick={handleSubmit(data => addCourse(data, this.props.addCourseA))} type="submit">Submit</button>
                 </Form>
             </div >
         )
@@ -104,7 +104,7 @@ class CourseForm extends Component {
 
 CourseForm = connect(
     state => ({ languageConfig: state.crs.configCourse.languages }),
-    { fetchConfigLanguages }
+    { fetchConfigLanguages, addCourseA }
 )(CourseForm)
 
 CourseForm = reduxForm({
