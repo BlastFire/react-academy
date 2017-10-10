@@ -2,7 +2,6 @@ import { getCourses, getConfigLanguageData } from '../lib/courseFakeService'
 
 const initState = {
     courses: [],
-    curCourse: {},
     configCourse: {
         languages: []
     }

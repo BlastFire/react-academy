@@ -27,25 +27,14 @@ class DisplayCourse extends Component {
         if (!this.props.curCourse) {
             return <p>Loading...</p>;
         }
-
         const { curCourse } = this.props
-
-        const handleImageSrc = () => {
-            if(curCourse.image) {
-                console.log(curCourse.image)
-                return curCourse.image
-            } else {
-                return "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
-            }
-        }
-
-        //https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180
-
+        const handleImageSrc = () => curCourse.image ? curCourse.image : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
+        
         return (
             <div>
                 <Card>
                     <CardHeader tag="h2">{curCourse.name}</CardHeader>
-                    <CardImg top width="50%" src={handleImageSrc()} alt="Card image cap"  />
+                    <CardImg top width="50%" src={handleImageSrc()} alt="Card image cap" />
                     <CardBlock>
                         <CardTitle>Card teacher name</CardTitle>
                         <CardText>{curCourse.teacherName}</CardText>

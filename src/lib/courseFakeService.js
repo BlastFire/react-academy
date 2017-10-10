@@ -7,25 +7,20 @@ export const getConfigLanguageData = () => configLanguageData
 let counter = courseIdCounter()
 
 export const addCourse = (course, action) => {
-    course.creationDate = new Date().getTime()
-    course.lastUpdateDate = course.creationDate
-    course.id = counter.incrementCounter()
-    handleFileExtract(course);
-    action(course)
-    console.log(course)
-}
-
-function handleFileExtract(course) {
     //FILE BASE64 ENCODE so we can store it in the object (TODO: diff approach, when we are going to store them into a remote storage)
     const reader = new FileReader();
     reader.addEventListener("load", function () {
-        course.image = reader.result;
-    }, false);
+        console.log("listener")
+        course.creationDate = new Date().getTime()
+        course.lastUpdateDate = course.creationDate
+        course.id = counter.incrementCounter()
+        course.image = reader.result
+        action(course)
+    }, false)
     if (course.image[0]) {
-        reader.readAsDataURL(course.image[0]);
+        reader.readAsDataURL(course.image[0])
     }
 }
-
 //hoisted
 function courseIdCounter() {
     let counter = 2
