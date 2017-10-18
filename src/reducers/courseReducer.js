@@ -19,10 +19,7 @@ export const addCourseA = course => ({ type: COURSE_ADD, payload: course })
 export const fetchCourses = () => dispatch => dispatch(loadCoursesA(getCourses()))
 export const fetchConfigLanguages = () => dispatch => dispatch(loadConfigLanguagesA(getConfigLanguageData()))
 
-
-export const fetchCourse = (courses, id) => {
-    return courses.find(el => el.id === Number(id))
-}
+export const fetchCourse = (courses, id) => courses.find(el => el.id === Number(id))
 
 export default (state = initState, action) => {
     switch (action.type) {

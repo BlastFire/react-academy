@@ -22,7 +22,7 @@ class CourseList extends Component {
             <ListGroup>
                 <CourseAdd onClick={this.onCourseAddHandler} />
                 {
-                    this.props.courses.map(course => <CourseListItem key={course.id} {...course} />)
+                    this.props.courses.map(course => course.visible ? <CourseListItem key={course.id} {...course} /> : '')
                 }
             </ListGroup>
         )

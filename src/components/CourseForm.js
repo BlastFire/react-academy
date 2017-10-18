@@ -7,6 +7,7 @@ import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
 import { fetchConfigLanguages, addCourseA } from '../reducers/courseReducer'
 import { addCourse } from '../lib/courseFakeService'
+import StarsComponent from './FormComponents/StarComponent'
 
 //validation setup
 const vMaxLength25 = vMaxLength(25)
@@ -18,6 +19,11 @@ class CourseForm extends Component {
 
     componentDidMount() {
         this.props.fetchConfigLanguages()
+    }
+
+    crown(data) {
+        addCourse(data, this.props.addCourseA)
+        //TODO navigate outside
     }
 
     render() {
@@ -84,7 +90,7 @@ class CourseForm extends Component {
                     <FormGroup row>
                         <Label for="rating" sm={2}>Rating</Label>
                         <Col sm={{ size: 10 }}>
-                            <Field name="rating" component={StarInput} />
+                            <StarsComponent edit="true" />
                         </Col>
                     </FormGroup>
 
@@ -94,8 +100,7 @@ class CourseForm extends Component {
                             <Field component={CommonInput} type="file" name="image" />
                         </Col>
                     </FormGroup>
-
-                    <button className="btn btn-primary" onClick={handleSubmit(data => addCourse(data, this.props.addCourseA))} type="submit">Submit</button>
+                    {<button className="btn btn-primary" onClick={handleSubmit(data => this.crown(data))} type="submit">Submit</button>}
                 </Form>
             </div >
         )

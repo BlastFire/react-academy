@@ -3,9 +3,16 @@ import { connect } from 'react-redux'
 import {
     Card, CardImg, CardText, CardBlock, CardTitle, CardHeader
 } from 'reactstrap';
-import { fetchCourse } from '../reducers/courseReducer'
+import ReactStars from 'react-stars'
+import * as moment from 'moment'
+import { fetchCourse, fetchConfigLanguages } from '../reducers/courseReducer'
+import StarsComponent from './FormComponents/StarComponent'
 
 class DisplayCourse extends Component {
+
+    componentDidMount() {
+        this.props.fetchConfigLanguages()
+    }
 
     /*
     IMPORTANT- only this hook will call when props are changed(eg. from link)
@@ -27,9 +34,17 @@ class DisplayCourse extends Component {
         if (!this.props.curCourse) {
             return <p>Loading...</p>;
         }
-        const { curCourse } = this.props
+        const { curCourse, languageConfig } = this.props
+
+        //transmutate course values
         const handleImageSrc = () => curCourse.image ? curCourse.image : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
-        
+        if (languageConfig.length > 0) {
+            let found = languageConfig.find(el => el.code === curCourse.language)
+            curCourse.langValue = found ? found.value : undefined
+        }
+
+        console.log(curCourse.visible)
+
         return (
             <div>
                 <Card>
@@ -41,13 +56,17 @@ class DisplayCourse extends Component {
                         <CardTitle>Card teacher email</CardTitle>
                         <CardText>{curCourse.teacherEmail}</CardText>
                         <CardTitle>Language</CardTitle>
-                        <CardText>{curCourse.language}</CardText>
+                        <CardText>
+                            {curCourse.langValue ? curCourse.langValue : curCourse.language}
+                        </CardText>
                         <CardTitle>Description</CardTitle>
                         <CardText>{curCourse.description}</CardText>
                         <CardTitle>Last Update Date</CardTitle>
-                        <CardText>{curCourse.lastUpdateDate}</CardText>
+                        <CardText>{moment(curCourse.lastUpdateDate).format('YYYY-MM-DD HH:mm')}</CardText>
                         <CardTitle>Rating</CardTitle>
-                        <CardText>{curCourse.rating}</CardText>
+                        <CardText>
+                            <StarsComponent value={curCourse.rating} />
+                        </CardText>
                     </CardBlock>
                 </Card>
             </div>
@@ -56,5 +75,9 @@ class DisplayCourse extends Component {
 }
 
 export default connect(
-    (state, ownProps) => ({ curCourse: fetchCourse(state.crs.courses, ownProps.courseId) })
+    (state, ownProps) => ({
+        curCourse: fetchCourse(state.crs.courses, ownProps.courseId),
+        languageConfig: state.crs.configCourse.languages
+    }),
+    { fetchConfigLanguages }
 )(DisplayCourse)

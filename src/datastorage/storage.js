@@ -24,7 +24,7 @@ export let courseData = [
         language: 'EN',
         image: 'image2.jpg',
         rating: 3,
-        visible: true,
+        visible: false,
         creationDate: 1507486008447,
         lastUpdateDate: 1507486008447
     }
