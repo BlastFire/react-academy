@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
-    Card, CardImg, CardText, CardBlock, CardTitle, CardHeader
+    Card, CardImg, CardText, CardBlock, CardTitle, CardHeader, Button
 } from 'reactstrap';
 import ReactStars from 'react-stars'
 import * as moment from 'moment'
+import './css/DisplayCourse.css'
 import { fetchCourse, fetchConfigLanguages } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
 
@@ -18,6 +19,12 @@ class DisplayCourse extends Component {
     IMPORTANT- only this hook will call when props are changed(eg. from link)
     */
     componentWillReceiveProps() { }
+
+    handleDelete() {
+        //delete
+        
+        //navigate to list
+    }
 
     render() {
 
@@ -43,12 +50,14 @@ class DisplayCourse extends Component {
             curCourse.langValue = found ? found.value : undefined
         }
 
-        console.log(curCourse.visible)
-
         return (
             <div>
                 <Card>
-                    <CardHeader tag="h2">{curCourse.name}</CardHeader>
+                    <CardHeader tag="h2">
+                        {curCourse.name}
+                        <Button className="floatRight col-lg-2" color="danger" onClick={this.handleDelete}>Delete</Button>
+                        <Button className="floatRight col-lg-2" color="primary">Edit</Button>
+                    </CardHeader>
                     <CardImg top width="50%" src={handleImageSrc()} alt="Card image cap" />
                     <CardBlock>
                         <CardTitle>Card teacher name</CardTitle>

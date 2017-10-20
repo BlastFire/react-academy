@@ -1,0 +1,7 @@
+.floatRight {
+    float: right
+}
+
+.floatRight:not(:first-child) {
+    margin-right: 10px
+}
