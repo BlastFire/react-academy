@@ -4,9 +4,10 @@ import {
     Card, CardImg, CardText, CardBlock, CardTitle, CardHeader, Button
 } from 'reactstrap';
 import ReactStars from 'react-stars'
+import { withRouter } from 'react-router-dom'
 import * as moment from 'moment'
 import './css/DisplayCourse.css'
-import { fetchCourse, fetchConfigLanguages } from '../reducers/courseReducer'
+import { fetchCourse, fetchConfigLanguages, deleteCourseA } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
 
 class DisplayCourse extends Component {
@@ -19,12 +20,6 @@ class DisplayCourse extends Component {
     IMPORTANT- only this hook will call when props are changed(eg. from link)
     */
     componentWillReceiveProps() { }
-
-    handleDelete() {
-        //delete
-        
-        //navigate to list
-    }
 
     render() {
 
@@ -41,7 +36,7 @@ class DisplayCourse extends Component {
         if (!this.props.curCourse) {
             return <p>Loading...</p>;
         }
-        const { curCourse, languageConfig } = this.props
+        const { curCourse, languageConfig, deleteCourseA, history } = this.props
 
         //transmutate course values
         const handleImageSrc = () => curCourse.image ? curCourse.image : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
@@ -50,13 +45,17 @@ class DisplayCourse extends Component {
             curCourse.langValue = found ? found.value : undefined
         }
 
+        const handleEdit = (id) => {
+            history.push(`${curCourse.id}/edit`)
+        }
+
         return (
             <div>
                 <Card>
                     <CardHeader tag="h2">
                         {curCourse.name}
-                        <Button className="floatRight col-lg-2" color="danger" onClick={this.handleDelete}>Delete</Button>
-                        <Button className="floatRight col-lg-2" color="primary">Edit</Button>
+                        <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourseA(curCourse.id)}>Delete</Button>
+                        <Button className="floatRight col-lg-2" color="primary" onClick={() => handleEdit(curCourse.id)}>Edit</Button>
                     </CardHeader>
                     <CardImg top width="50%" src={handleImageSrc()} alt="Card image cap" />
                     <CardBlock>
@@ -83,10 +82,10 @@ class DisplayCourse extends Component {
     }
 }
 
-export default connect(
+export default withRouter(connect(
     (state, ownProps) => ({
         curCourse: fetchCourse(state.crs.courses, ownProps.courseId),
         languageConfig: state.crs.configCourse.languages
     }),
-    { fetchConfigLanguages }
-)(DisplayCourse)
+    { fetchConfigLanguages, deleteCourseA }
+)(DisplayCourse))

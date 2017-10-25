@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { Col, Form, FormGroup, Label } from 'reactstrap'
+import { withRouter } from 'react-router-dom'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
@@ -15,17 +16,18 @@ const vMaxLength15 = vMaxLength(15)
 const vMaxLength50 = vMaxLength(50)
 
 
-class CourseForm extends Component {
+class CourseFormEdit extends Component {
 
     componentDidMount() {
         this.props.fetchConfigLanguages()
     }
 
     render() {
+        //console.log(this.props)
         const { handleSubmit, languageConfig } = this.props
         return (
             <div>
-                <h2> Adding a course </h2>
+                <h2> Editing a course </h2>
                 <Form>
                     <FormGroup row>
                         <Label for="name" sm={2}>Course Name</Label>
@@ -95,20 +97,20 @@ class CourseForm extends Component {
                             <Field component={CommonInput} type="file" name="image" />
                         </Col>
                     </FormGroup>
-                    {<button className="btn btn-primary" onClick={handleSubmit(data => addCourse(data, this.props.addCourseA))} type="submit">Submit</button>}
+                    {<button className="btn btn-primary" onClick={handleSubmit(data => addCourse(data, this.props.addCourseA))} type="submit">Edit</button>}
                 </Form>
             </div >
         )
     }
 }
 
-CourseForm = connect(
+CourseFormEdit = withRouter(connect(
     state => ({ languageConfig: state.crs.configCourse.languages }),
     { fetchConfigLanguages, addCourseA }
-)(CourseForm)
+)(CourseFormEdit))
 
-CourseForm = reduxForm({
+CourseFormEdit = reduxForm({
     form: 'courseForm'
-})(CourseForm)
+})(CourseFormEdit)
 
-export default CourseForm
+export default CourseFormEdit

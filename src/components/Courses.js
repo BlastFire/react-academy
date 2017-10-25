@@ -5,6 +5,7 @@ import './css/Courses.css'
 import CourseList from './CourseList'
 import DisplayCourse from './DisplayCourse'
 import CourseForm from './CourseForm'
+import CourseFormEdit from './CourseFormEdit'
 
 const Courses = ({ match }) => {
 
@@ -18,6 +19,7 @@ const Courses = ({ match }) => {
                     <Col xs="9">
                         <Switch>
                             <Route exact path="/courses/add" component={CourseForm} />
+                            <Route exact path={`${match.url}/:courseId/edit`} component={CourseFormEdit} />
                             <Route path={`${match.url}/:courseId`} render={({ match }) => (
                                 <DisplayCourse courseId={match.params.courseId} />
                             )} />
