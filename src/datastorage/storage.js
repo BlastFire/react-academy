@@ -9,8 +9,8 @@ export let courseData = [
         description: 'course 1 description',
         language: 'FR',
         image: 'image1.jpg',
-        rating: 1,
-        visible: true,
+        rating: 2,
+        invisible: false,
         creationDate: 1507486008447,
         lastUpdateDate: 1507486008447
     },
@@ -24,7 +24,7 @@ export let courseData = [
         language: 'EN',
         image: 'image2.jpg',
         rating: 3,
-        visible: false,
+        invisible: false,
         creationDate: 1507486008447,
         lastUpdateDate: 1507486008447
     }

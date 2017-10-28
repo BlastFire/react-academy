@@ -75,11 +75,11 @@ class CourseForm extends Component {
                     </FormGroup>
 
                     <FormGroup row>
-                        <Label for="visible" sm={2}>Visibility</Label>
+                        <Label for="invisible" sm={2}>Invisible</Label>
                         <Col sm={{ size: 10 }}>
-                            <Field name="visible" component="input" type="checkbox" />{' '}
+                            <Field name="invisible" component="input" type="checkbox" />{' '}
                             Set this course invisible for non-auth users
-                    </Col>
+                        </Col>
                     </FormGroup>
 
                     <FormGroup row>

@@ -6,8 +6,8 @@ import { withRouter } from 'react-router-dom'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
-import { fetchCourse, fetchConfigLanguages } from '../reducers/courseReducer'
-import { addCourse } from '../lib/courseFakeService'
+import { fetchCourse, fetchConfigLanguages, editCourseA } from '../reducers/courseReducer'
+import { editCourse } from '../lib/courseFakeService'
 import StarsComponent from './FormComponents/StarComponent'
 
 //validation setup
@@ -16,6 +16,10 @@ const vMaxLength15 = vMaxLength(15)
 const vMaxLength50 = vMaxLength(50)
 
 class CourseFormEdit extends Component {
+
+    edit(data) {
+        return editCourse({ type: 'EDIT', payload: { source: data, action: this.props.editCourseA } })
+    }
 
     componentDidMount() {
         this.props.fetchConfigLanguages()
@@ -27,6 +31,7 @@ class CourseFormEdit extends Component {
             <div>
                 <h2> Editing a course </h2>
                 <Form>
+
                     <FormGroup row>
                         <Label for="name" sm={2}>Course Name</Label>
                         <Col sm={10}>
@@ -75,11 +80,11 @@ class CourseFormEdit extends Component {
                     </FormGroup>
 
                     <FormGroup row>
-                        <Label for="visible" sm={2}>Visibility</Label>
+                        <Label for="invisible" sm={2}>Invisible</Label>
                         <Col sm={{ size: 10 }}>
-                            <Field name="visible" component="input" type="checkbox" />{' '}
+                            <Field name="invisible" component="input" type="checkbox" />{' '}
                             Set this course invisible for non-auth users
-                    </Col>
+                        </Col>
                     </FormGroup>
 
                     <FormGroup row>
@@ -95,7 +100,7 @@ class CourseFormEdit extends Component {
                             <Field component={CommonInput} type="file" name="image" />
                         </Col>
                     </FormGroup>
-                    {<button className="btn btn-primary" onClick={handleSubmit(data => addCourse(data, this.props.addCourseA))} type="submit">Edit</button>}
+                    {<button className="btn btn-primary" onClick={handleSubmit(data => this.edit(data))} type="submit">Save</button>}
                 </Form>
             </div >
         )
@@ -108,11 +113,10 @@ CourseFormEdit = reduxForm({
 
 CourseFormEdit = connect(
     (state, ownProps) => ({
-        //initialValues: fetchCourse(state.crs.courses, ownProps.match.params.courseId),
-        initialValues: {name: "crown"},
+        initialValues: fetchCourse(state.crs.courses, ownProps.match.params.courseId),
         languageConfig: state.crs.configCourse.languages,
     }),
-    { fetchConfigLanguages }
+    { fetchConfigLanguages, editCourseA }
 )(CourseFormEdit)
 
 export default CourseFormEdit

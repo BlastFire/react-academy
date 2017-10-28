@@ -15,24 +15,41 @@ export const addCourse = (course, action) => {
         //when done loading image
         reader.addEventListener("load", function () {
             course.image = reader.result
-            action(finishCourseSetup(course))
+            action(finishAddCourseSetup(course))
         }, false)
 
     } else {
-        action(finishCourseSetup(course))
+        action(finishAddCourseSetup(course))
     }
-
 }
 
-const finishCourseSetup = (course) => {
+export const editCourse = ({ type, payload: { action, source: course } }) => {
+
+    if (course.image && course.image.constructor === 'array') {
+        const reader = new FileReader();
+        reader.readAsDataURL(course.image[0])
+
+        //when done loading image
+        reader.addEventListener("load", function () {
+            course.image = reader.result
+            action(finishEditCourseSetup(course))
+        }, false)
+    } else {
+        action(finishEditCourseSetup(course))
+    }
+}
+
+const finishAddCourseSetup = (course) => {
     course.creationDate = new Date().getTime()
     course.lastUpdateDate = course.creationDate
     course.id = counter.incrementCounter()
-    if (course.visible) {
-        course.visible = false
-    } else {
-        course.visible = true
-    }
+    course.invisible = course.invisible ? true : false
+    return course
+}
+
+const finishEditCourseSetup = (course) => {
+    course.lastUpdateDate = Date.now()
+    course.invisible = course.invisible ? true : false
     return course
 }
 
