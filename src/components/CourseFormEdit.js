@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
-import { fetchConfigLanguages, addCourseA } from '../reducers/courseReducer'
+import { fetchCourse, fetchConfigLanguages } from '../reducers/courseReducer'
 import { addCourse } from '../lib/courseFakeService'
 import StarsComponent from './FormComponents/StarComponent'
 
@@ -15,7 +15,6 @@ const vMaxLength25 = vMaxLength(25)
 const vMaxLength15 = vMaxLength(15)
 const vMaxLength50 = vMaxLength(50)
 
-
 class CourseFormEdit extends Component {
 
     componentDidMount() {
@@ -23,7 +22,6 @@ class CourseFormEdit extends Component {
     }
 
     render() {
-        //console.log(this.props)
         const { handleSubmit, languageConfig } = this.props
         return (
             <div>
@@ -104,13 +102,17 @@ class CourseFormEdit extends Component {
     }
 }
 
-CourseFormEdit = withRouter(connect(
-    state => ({ languageConfig: state.crs.configCourse.languages }),
-    { fetchConfigLanguages, addCourseA }
-)(CourseFormEdit))
-
 CourseFormEdit = reduxForm({
     form: 'courseForm'
 })(CourseFormEdit)
+
+CourseFormEdit = connect(
+    (state, ownProps) => ({
+        //initialValues: fetchCourse(state.crs.courses, ownProps.match.params.courseId),
+        initialValues: {name: "crown"},
+        languageConfig: state.crs.configCourse.languages,
+    }),
+    { fetchConfigLanguages }
+)(CourseFormEdit)
 
 export default CourseFormEdit

@@ -21,6 +21,7 @@ export const deleteCourseA = id => ({ type: DELETE_COURSE, payload: id })
 export const fetchCourses = () => dispatch => dispatch(loadCoursesA(getCourses()))
 export const fetchConfigLanguages = () => dispatch => dispatch(loadConfigLanguagesA(getConfigLanguageData()))
 
+//TODO: move it from reducer
 export const fetchCourse = (courses, id) => courses.find(el => el.id === Number(id))
 
 export default (state = initState, action) => {
