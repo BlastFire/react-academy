@@ -1,0 +1,2 @@
+1. fix the bug with double dash in url
+2. refactor edit and add forms for courses ( maybe with HOC )
