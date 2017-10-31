@@ -1,9 +1,23 @@
 import React from 'react'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { firebaseConnect } from 'react-redux-firebase'
 
-const Home = props => (
-    <div className="Home">
-        <h1>Home</h1>
-    </div>
-)
+let Home = props => {
 
-export default Home
+    console.log(props)
+
+    return (
+        <div className="Home">
+            <h1>Home</h1>
+        </div>
+    )
+
+}
+
+Home = firebaseConnect([
+    'courses'
+])(Home)
+export default connect(
+    ({ firebase }) => ({ firebase })
+)(Home)
