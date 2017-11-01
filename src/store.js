@@ -5,6 +5,7 @@ import { reducer as formReducer } from 'redux-form'
 import { reactReduxFirebase, firebaseStateReducer } from 'react-redux-firebase'
 import testReducer from './reducers/testreducer'
 import courseReducer from './reducers/courseReducer'
+import firebase from 'firebase'
 
 const firebaseConfig = {
     apiKey: "AIzaSyBqzVnkfm3XDKx_9qwm_usuOgtqAmQXMjU",
@@ -15,13 +16,20 @@ const firebaseConfig = {
     messagingSenderId: "119022017805"
 }
 
-const reduxFirebaseConfig = { userProfile: 'users' }
+
+const reduxFirebaseConfig = {
+    userProfile: 'users',
+    enableLoggin: false
+}
+
+firebase.initializeApp(firebaseConfig)
 
 // Add reactReduxFirebase store enhancer
 const createStoreWithFirebase = compose(
-    reactReduxFirebase(firebaseConfig, reduxFirebaseConfig),
+    reactReduxFirebase(firebase, reduxFirebaseConfig),
 )(createStore)
 
+//const store = createStore(rootReducer, compose(reactReduxFirebase(firebaseConfig, reduxFirebase)));
 
 const reducer = combineReducers({
     test: testReducer,

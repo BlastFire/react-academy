@@ -1,17 +1,26 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firebaseConnect } from 'react-redux-firebase'
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 
-let Home = props => {
+class Home extends Component {
 
-    console.log(props)
+    componentDidMount() {
+    }
 
-    return (
-        <div className="Home">
-            <h1>Home</h1>
-        </div>
-    )
+
+    render() {
+
+
+        //const listbaby = isLoaded(this.props.firebase.data.courses)
+        console.log(this.props.crown.firebase.data)
+
+        return (
+            <div className="Home">
+                <h1>Home</h1>
+            </div>
+        )
+    }
 
 }
 
@@ -19,5 +28,5 @@ Home = firebaseConnect([
     'courses'
 ])(Home)
 export default connect(
-    ({ firebase }) => ({ firebase })
+    state => ({ crown: state })
 )(Home)
