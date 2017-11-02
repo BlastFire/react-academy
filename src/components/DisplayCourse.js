@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import {
     Card, CardImg, CardText, CardBlock, CardTitle, CardHeader, Button
 } from 'reactstrap';
-import ReactStars from 'react-stars'
 import { withRouter } from 'react-router-dom'
 import * as moment from 'moment'
 import './css/DisplayCourse.css'
