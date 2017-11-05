@@ -7,6 +7,7 @@ import './App.css';
 import Header from './components/Header'
 import Home from './components/Home'
 import Courses from './components/Courses'
+import Top5Courses from './components/Top5Courses'
 import Login from './components/Login'
 import Logout from './components/Logout'
 
@@ -25,6 +26,7 @@ class App extends Component {
         <Route path="/courses" component={Courses} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
+        <Route path="/top5" component={Top5Courses} />
       </div >
     );
   }

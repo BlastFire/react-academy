@@ -10,6 +10,13 @@ const Header = (props) => (
                 <NavItem>
                     <NavLink tag={Link} to="/courses">Courses</NavLink>
                 </NavItem>
+                {
+                    props.userIn ?
+                        <NavItem>
+                            <NavLink tag={Link} to="/top5">Top 5 Courses</NavLink>
+                        </NavItem>
+                        : ""
+                }
             </Nav>
             <Nav className="d-flex flex-row-reverse" navbar>
                 {

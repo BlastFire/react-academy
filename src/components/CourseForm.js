@@ -6,8 +6,9 @@ import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
 import { fetchConfigLanguages, addCourseA } from '../reducers/courseReducer'
-import { addCourse } from '../lib/courseFakeService'
 import StarsComponent from './FormComponents/StarComponent'
+import { withFirebase } from 'react-redux-firebase'
+import { addCourse } from '../lib/courseFakeService'
 
 //validation setup
 const vMaxLength25 = vMaxLength(25)
@@ -95,7 +96,10 @@ class CourseForm extends Component {
                             <Field component={CommonInput} type="file" name="image" />
                         </Col>
                     </FormGroup>
-                    {<button className="btn btn-primary" onClick={handleSubmit(data => addCourse(data, this.props.addCourseA))} type="submit">Submit</button>}
+                    <button className="btn btn-primary"
+                        onClick={handleSubmit(data =>
+                             addCourse({ firebase: this.props.firebase, course: data, action: this.props.addCourseA }))} 
+                        type="submit">Submit</button>
                 </Form>
             </div >
         )
@@ -110,5 +114,7 @@ CourseForm = connect(
 CourseForm = reduxForm({
     form: 'courseForm'
 })(CourseForm)
+
+CourseForm = withFirebase(CourseForm)
 
 export default CourseForm

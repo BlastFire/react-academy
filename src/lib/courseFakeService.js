@@ -6,19 +6,23 @@ export const getCourses = () => courseData
 export const getConfigLanguageData = () => configLanguageData
 let counter = courseIdCounter()
 
-export const addCourse = (course, action) => {
+export const addCourse = ({ firebase, course, action }) => {
     //FILE BASE64 ENCODE so we can store it in the object (TODO: diff approach, when we are going to store them into a remote storage)
     if (course.image) {
+        console.log(course.image)
         const reader = new FileReader();
         reader.readAsDataURL(course.image[0])
 
         //when done loading image
         reader.addEventListener("load", function () {
+            console.log("if read")
             course.image = reader.result
+            firebase.push('courses', course)
             action(finishAddCourseSetup(course))
         }, false)
 
     } else {
+        firebase.push('courses', course)
         action(finishAddCourseSetup(course))
     }
 }

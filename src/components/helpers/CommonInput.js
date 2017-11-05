@@ -7,7 +7,7 @@ import { Input } from 'reactstrap'
 export const CommonInput = ({ type, textarea, input: { value, onChange, onBlur }, meta: { touched, error }, ...props }) => {
 
     //for file input, browsers doesnt like to assign default value, so we clearing it
-    if (type === 'file') value = ''
+    if (type === 'file') value = undefined
     const textareaType = <textarea onChange={onChange} onBlur={onBlur} value={value} type={type} {...props} />
     const inputType = <Input onChange={onChange} onBlur={onBlur} type={type} value={value} {...props} />
     const errorType = touched && (error && <span>{error}</span>)
