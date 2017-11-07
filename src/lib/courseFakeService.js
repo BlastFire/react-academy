@@ -1,8 +1,27 @@
 import { courseData, configLanguageData } from '../datastorage/storage'
 
+courses: [
+    { id: { name: "adsda" } }
+]
+
 //moment(value).format('YYYY-MM-DD HH:mm');
 
-export const getCourses = () => courseData
+//export const getCourses = () => courseData
+
+export const getCourses = (firebase) => {
+    const courses = [];
+    firebase.ref('courses').once('value').then((snapshot) => {
+        snapshot.forEach(userSnapshot => {
+            const course = {
+                ...userSnapshot.val(), id: userSnapshot.key
+            };
+            //course[userSnapshot.key] = { ...userSnapshot.val() }
+            courses.push(course)
+        });
+    })
+    return courses
+}
+
 export const getConfigLanguageData = () => configLanguageData
 let counter = courseIdCounter()
 
@@ -15,7 +34,6 @@ export const addCourse = ({ firebase, course, action }) => {
 
         //when done loading image
         reader.addEventListener("load", function () {
-            console.log("if read")
             course.image = reader.result
             firebase.push('courses', course)
             action(finishAddCourseSetup(course))
@@ -27,7 +45,7 @@ export const addCourse = ({ firebase, course, action }) => {
     }
 }
 
-export const editCourse = ({ type, payload: { action, source: course } }) => {
+export const editCourse = ({ firebase, course, action }) => {
 
     if (course.image && course.image.constructor === 'array') {
         const reader = new FileReader();
@@ -36,9 +54,11 @@ export const editCourse = ({ type, payload: { action, source: course } }) => {
         //when done loading image
         reader.addEventListener("load", function () {
             course.image = reader.result
+            //firebase.update('courses', course)
             action(finishEditCourseSetup(course))
         }, false)
     } else {
+        //firebase.update('courses', course)
         action(finishEditCourseSetup(course))
     }
 }

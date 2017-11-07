@@ -9,6 +9,7 @@ import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
 import { fetchCourse, fetchConfigLanguages, editCourseA } from '../reducers/courseReducer'
 import { editCourse } from '../lib/courseFakeService'
 import StarsComponent from './FormComponents/StarComponent'
+import { withFirebase } from 'react-redux-firebase'
 
 //validation setup
 const vMaxLength25 = vMaxLength(25)
@@ -18,7 +19,7 @@ const vMaxLength50 = vMaxLength(50)
 class CourseFormEdit extends Component {
 
     edit(data) {
-        return editCourse({ type: 'EDIT', payload: { source: data, action: this.props.editCourseA } })
+        return editCourse({ firebase: this.props.firebase, course: data, action: this.props.editCourseA })
     }
 
     componentDidMount() {
@@ -118,5 +119,7 @@ CourseFormEdit = connect(
     }),
     { fetchConfigLanguages, editCourseA }
 )(CourseFormEdit)
+
+CourseFormEdit = withFirebase(CourseFormEdit)
 
 export default CourseFormEdit

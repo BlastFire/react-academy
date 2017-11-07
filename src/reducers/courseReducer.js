@@ -20,8 +20,10 @@ export const deleteCourseA = id => ({ type: DELETE_COURSE, payload: id })
 export const editCourseA = course => ({ type: COURSE_EDIT, payload: course })
 
 //thunk
-export const fetchCourses = () => dispatch => dispatch(loadCoursesA(getCourses()))
 export const fetchConfigLanguages = () => dispatch => dispatch(loadConfigLanguagesA(getConfigLanguageData()))
+export const fetchCourses = (firebase) => {
+    return dispatch => dispatch(loadCoursesA(getCourses(firebase)))
+}
 
 //TODO: move it from reducer
 export const fetchCourse = (courses, id) => courses.find(el => el.id === Number(id))
