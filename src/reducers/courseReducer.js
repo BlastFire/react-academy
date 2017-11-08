@@ -13,20 +13,38 @@ const COURSE_ADD = 'COURSE_ADD'
 const DELETE_COURSE = 'DELETE_COURSE'
 const COURSE_EDIT = 'COURSE_EDIT'
 
-const loadCoursesA = courses => ({ type: COURSES_LOAD, payload: courses });
+const loadCoursesA = courses => ({ type: COURSES_LOAD, payload: courses })
 const loadConfigLanguagesA = langs => ({ type: CONFIG_LANGUAGE_LOAD, payload: langs })
 export const addCourseA = course => ({ type: COURSE_ADD, payload: course })
 export const deleteCourseA = id => ({ type: DELETE_COURSE, payload: id })
 export const editCourseA = course => ({ type: COURSE_EDIT, payload: course })
 
 //thunk
-export const fetchConfigLanguages = () => dispatch => dispatch(loadConfigLanguagesA(getConfigLanguageData()))
-export const fetchCourses = (firebase) => {
-    return dispatch => dispatch(loadCoursesA(getCourses(firebase)))
+
+export const fetchConfigLanguages = firebase => dispatch => {
+    getConfigLanguageData(firebase).then(snapshot => {
+        const langs = []
+        snapshot.forEach(userSnapShot => {
+            const lang = { code: userSnapShot.key, value: userSnapShot.val() }
+            langs.push(lang)
+        })
+        dispatch(loadConfigLanguagesA(langs))
+    })
+}
+
+export const fetchCourses = firebase => dispatch => {
+    getCourses(firebase).then(snapshot => {
+        const courses = []
+        snapshot.forEach(userSnapShot => {
+            const course = { ...userSnapShot.val(), id: userSnapShot.key }
+            courses.push(course)
+        })
+        dispatch(loadCoursesA(courses))
+    })
 }
 
 //TODO: move it from reducer
-export const fetchCourse = (courses, id) => courses.find(el => el.id === Number(id))
+export const fetchCourse = (courses, id) => courses.find(el => el.id === id)
 
 export default (state = initState, action) => {
     switch (action.type) {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Button } from 'reactstrap';
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import { withRouter } from 'react-router'
