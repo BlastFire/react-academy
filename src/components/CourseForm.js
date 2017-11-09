@@ -19,7 +19,7 @@ const vMaxLength50 = vMaxLength(50)
 class CourseForm extends Component {
 
     componentDidMount() {
-        this.props.fetchConfigLanguages()
+        this.props.fetchConfigLanguages(this.props.firebase)
     }
 
     render() {

@@ -23,7 +23,7 @@ class CourseFormEdit extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchConfigLanguages()
+        this.props.fetchConfigLanguages(this.props.firebase)
     }
 
     render() {

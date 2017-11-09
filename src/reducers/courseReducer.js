@@ -20,8 +20,13 @@ export const deleteCourseA = id => ({ type: DELETE_COURSE, payload: id })
 export const editCourseA = course => ({ type: COURSE_EDIT, payload: course })
 
 //thunk
+export const fetchConfigLanguages = firebase => (dispatch, getState) => {
 
-export const fetchConfigLanguages = firebase => dispatch => {
+    const { crs: { configCourse } } = getState()
+
+    console.log(configCourse)
+    //console.log(getState())
+
     getConfigLanguageData(firebase).then(snapshot => {
         const langs = []
         snapshot.forEach(userSnapShot => {
