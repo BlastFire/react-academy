@@ -5,10 +5,9 @@ import { Col, Form, FormGroup, Label } from 'reactstrap'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
-import { fetchConfigLanguages, addCourseA } from '../reducers/courseReducer'
+import { fetchConfigLanguages, addCourse } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
 import { withFirebase } from 'react-redux-firebase'
-import { addCourse } from '../lib/courseFakeService'
 
 //validation setup
 const vMaxLength25 = vMaxLength(25)
@@ -98,7 +97,7 @@ class CourseForm extends Component {
                     </FormGroup>
                     <button className="btn btn-primary"
                         onClick={handleSubmit(data =>
-                             addCourse({ firebase: this.props.firebase, course: data, action: this.props.addCourseA }))} 
+                            this.props.addCourse({ firebase: this.props.firebase, course: data }))}
                         type="submit">Submit</button>
                 </Form>
             </div >
@@ -108,7 +107,7 @@ class CourseForm extends Component {
 
 CourseForm = connect(
     state => ({ languageConfig: state.crs.configCourse.languages }),
-    { fetchConfigLanguages, addCourseA }
+    { fetchConfigLanguages, addCourse }
 )(CourseForm)
 
 CourseForm = reduxForm({

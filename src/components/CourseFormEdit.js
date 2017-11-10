@@ -6,8 +6,7 @@ import { withRouter } from 'react-router-dom'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
-import { fetchCourse, fetchConfigLanguages, editCourseA } from '../reducers/courseReducer'
-import { editCourse } from '../lib/courseFakeService'
+import { fetchCourse, fetchConfigLanguages, editCourse } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
 import { withFirebase } from 'react-redux-firebase'
 
@@ -19,7 +18,7 @@ const vMaxLength50 = vMaxLength(50)
 class CourseFormEdit extends Component {
 
     edit(data) {
-        return editCourse({ firebase: this.props.firebase, course: data, action: this.props.editCourseA })
+        return this.props.editCourse({ firebase: this.props.firebase, course: data })
     }
 
     componentDidMount() {
@@ -117,7 +116,7 @@ CourseFormEdit = connect(
         initialValues: fetchCourse(state.crs.courses, ownProps.match.params.courseId),
         languageConfig: state.crs.configCourse.languages,
     }),
-    { fetchConfigLanguages, editCourseA }
+    { fetchConfigLanguages, editCourse }
 )(CourseFormEdit)
 
 CourseFormEdit = withFirebase(CourseFormEdit)

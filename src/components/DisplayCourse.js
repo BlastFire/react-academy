@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom'
 import { withFirebase } from 'react-redux-firebase'
 import * as moment from 'moment'
 import './css/DisplayCourse.css'
-import { fetchCourse, fetchConfigLanguages, deleteCourseA } from '../reducers/courseReducer'
+import { fetchCourse, fetchConfigLanguages, deleteCourse } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
 
 class DisplayCourse extends Component {
@@ -37,7 +37,7 @@ class DisplayCourse extends Component {
         if (!this.props.curCourse) {
             return <p>Loading...</p>;
         }
-        const { curCourse, languageConfig, deleteCourseA, history } = this.props
+        const { curCourse, languageConfig, deleteCourse, history } = this.props
 
         //transmutate course values
         const handleImageSrc = () => curCourse.image ? curCourse.image : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
@@ -55,7 +55,7 @@ class DisplayCourse extends Component {
                 <Card>
                     <CardHeader tag="h2">
                         {curCourse.name}
-                        <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourseA(curCourse.id)}>Delete</Button>
+                        <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourse(curCourse.id)}>Delete</Button>
                         <Button className="floatRight col-lg-2" color="primary" onClick={() => handleEdit(curCourse.id)}>Edit</Button>
                     </CardHeader>
                     <CardImg top width="50%" src={handleImageSrc()} alt="Card image cap" />
@@ -91,6 +91,6 @@ export default compose(
             curCourse: fetchCourse(state.crs.courses, ownProps.courseId),
             languageConfig: state.crs.configCourse.languages
         }),
-        { fetchConfigLanguages, deleteCourseA }
+        { fetchConfigLanguages, deleteCourse }
     )
 )(DisplayCourse)
