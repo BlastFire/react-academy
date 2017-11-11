@@ -17,16 +17,15 @@ const vMaxLength50 = vMaxLength(50)
 
 class CourseFormEdit extends Component {
 
-    edit(data) {
-        return this.props.editCourse({ firebase: this.props.firebase, course: data })
-    }
-
     componentDidMount() {
         this.props.fetchConfigLanguages(this.props.firebase)
     }
 
     render() {
-        const { handleSubmit, languageConfig } = this.props
+        const { handleSubmit, languageConfig, history } = this.props
+
+        const redirectCb = () => history.push('/courses')
+
         return (
             <div>
                 <h2> Editing a course </h2>
@@ -100,7 +99,9 @@ class CourseFormEdit extends Component {
                             <Field component={CommonInput} type="file" name="image" />
                         </Col>
                     </FormGroup>
-                    {<button className="btn btn-primary" onClick={handleSubmit(data => this.edit(data))} type="submit">Save</button>}
+                    {<button className="btn btn-primary" onClick={handleSubmit(data =>
+                        this.props.editCourse({ firebase: this.props.firebase, course: data, redirectCb }))}
+                        type="submit">Save</button>}
                 </Form>
             </div >
         )
@@ -120,5 +121,6 @@ CourseFormEdit = connect(
 )(CourseFormEdit)
 
 CourseFormEdit = withFirebase(CourseFormEdit)
+CourseFormEdit = withRouter(CourseFormEdit)
 
 export default CourseFormEdit

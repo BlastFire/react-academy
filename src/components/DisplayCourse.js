@@ -37,7 +37,7 @@ class DisplayCourse extends Component {
         if (!this.props.curCourse) {
             return <p>Loading...</p>;
         }
-        const { curCourse, languageConfig, deleteCourse, history } = this.props
+        const { curCourse, languageConfig, deleteCourse, history, firebase } = this.props
 
         //transmutate course values
         const handleImageSrc = () => curCourse.image ? curCourse.image : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
@@ -50,12 +50,14 @@ class DisplayCourse extends Component {
             history.push(`${curCourse.id}/edit`)
         }
 
+        const redirectCb = () => history.push('/courses')
+
         return (
             <div>
                 <Card>
                     <CardHeader tag="h2">
                         {curCourse.name}
-                        <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourse(curCourse.id)}>Delete</Button>
+                        <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourse({ firebase, id: curCourse.id, redirectCb })}>Delete</Button>
                         <Button className="floatRight col-lg-2" color="primary" onClick={() => handleEdit(curCourse.id)}>Edit</Button>
                     </CardHeader>
                     <CardImg top width="50%" src={handleImageSrc()} alt="Card image cap" />
@@ -66,7 +68,7 @@ class DisplayCourse extends Component {
                         <CardText>{curCourse.teacherEmail}</CardText>
                         <CardTitle>Language</CardTitle>
                         <CardText>
-                            {curCourse.langValue ? curCourse.langValue : curCourse.language}
+                            {curCourse.langValue ? curCourse.langValue : curCourse.language ? curCourse.language : 'NONE' }
                         </CardText>
                         <CardTitle>Description</CardTitle>
                         <CardText>{curCourse.description}</CardText>

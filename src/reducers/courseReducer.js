@@ -20,9 +20,12 @@ const deleteCourseA = id => ({ type: DELETE_COURSE, payload: id })
 const editCourseA = course => ({ type: COURSE_EDIT, payload: course })
 
 //thunk
-export const addCourse = ({ firebase, course }) => dispatch => {
+export const addCourse = ({ firebase, course, redirectCb }) => dispatch => {
     //FILE BASE64 ENCODE so we can store it in the object (TODO: diff approach, when we are going to store them into a remote storage)
-    if (course.image && course.image.constructor === 'array') {
+    const imageType = /^image\//;
+
+    if (course.image && course.image.length !== 0 && imageType.test(course.image[0].type)) {
+
         const reader = new FileReader();
         reader.readAsDataURL(course.image[0])
 
@@ -38,9 +41,11 @@ export const addCourse = ({ firebase, course }) => dispatch => {
 
             //update store
             dispatch(addCourseA(course))
+            redirectCb()
         }, false)
 
     } else {
+        delete course.image
         course.creationDate = new Date().getTime()
         course.lastUpdateDate = course.creationDate
         course.invisible = course.invisible ? true : false
@@ -50,12 +55,19 @@ export const addCourse = ({ firebase, course }) => dispatch => {
 
         //update store
         dispatch(addCourseA(course))
+        redirectCb()
     }
 }
 
-export const editCourse = ({ firebase, course }) => dispatch => {
+export const editCourse = ({ firebase, course, redirectCb }) => dispatch => {
 
-    if (course.image && course.image.constructor === 'array') {
+    //cleaning some helper properties
+    delete course.langValue
+
+    const imageType = /^image\//;
+
+    if (course.image && course.image.length !== 0 && imageType.test(course.image[0].type)) {
+
         const reader = new FileReader();
         reader.readAsDataURL(course.image[0])
 
@@ -70,10 +82,12 @@ export const editCourse = ({ firebase, course }) => dispatch => {
 
             firebase.database().ref().update(updates).then(response => {
                 dispatch(editCourseA(course))
+                redirectCb()
             }, error => { console.log(`Update course error: ${error}`) })
 
         }, false)
     } else {
+        delete course.image
         course.lastUpdateDate = Date.now()
         course.invisible = course.invisible ? true : false
 
@@ -82,16 +96,18 @@ export const editCourse = ({ firebase, course }) => dispatch => {
 
         firebase.database().ref().update(updates).then(response => {
             dispatch(editCourseA(course))
+            redirectCb()
         }, error => { console.log(`Update course error: ${error}`) })
     }
 }
 
-export const deleteCourse = ({ firebase, id }) => dispatch => {
+export const deleteCourse = ({ firebase, id, redirectCb }) => dispatch => {
     let updates = {}
     updates['/courses/' + id] = null
 
     firebase.database().ref().update(updates).then(response => {
         dispatch(deleteCourseA(id))
+        redirectCb()
     }, error => { console.log(`Update course error: ${error}`) })
 
 }

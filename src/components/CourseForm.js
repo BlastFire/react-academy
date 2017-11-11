@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { Col, Form, FormGroup, Label } from 'reactstrap'
+import { withRouter } from 'react-router-dom'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
@@ -22,7 +23,10 @@ class CourseForm extends Component {
     }
 
     render() {
-        const { handleSubmit, languageConfig } = this.props
+        const { handleSubmit, languageConfig, history, firebase } = this.props
+
+        const redirectCb = () => history.push('/courses')
+
         return (
             <div>
                 <h2> Adding a course </h2>
@@ -97,7 +101,7 @@ class CourseForm extends Component {
                     </FormGroup>
                     <button className="btn btn-primary"
                         onClick={handleSubmit(data =>
-                            this.props.addCourse({ firebase: this.props.firebase, course: data }))}
+                            this.props.addCourse({ firebase: this.props.firebase, course: data, redirectCb }))}
                         type="submit">Submit</button>
                 </Form>
             </div >
@@ -115,5 +119,5 @@ CourseForm = reduxForm({
 })(CourseForm)
 
 CourseForm = withFirebase(CourseForm)
-
+CourseForm = withRouter(CourseForm)
 export default CourseForm
