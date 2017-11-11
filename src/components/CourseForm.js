@@ -26,7 +26,6 @@ class CourseForm extends Component {
         const { handleSubmit, languageConfig, history, firebase } = this.props
 
         const redirectCb = () => history.push('/courses')
-
         return (
             <div>
                 <h2> Adding a course </h2>
