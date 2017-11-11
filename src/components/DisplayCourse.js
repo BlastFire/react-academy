@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import {
-    Card, CardImg, CardText, CardBlock, CardTitle, CardHeader, Button
+    Card, CardImg, CardText, CardBody, CardTitle, CardHeader, Button
 } from 'reactstrap';
-import ReactStars from 'react-stars'
 import { withRouter } from 'react-router-dom'
+import { withFirebase } from 'react-redux-firebase'
 import * as moment from 'moment'
 import './css/DisplayCourse.css'
-import { fetchCourse, fetchConfigLanguages, deleteCourseA } from '../reducers/courseReducer'
+import { fetchCourse, fetchConfigLanguages, deleteCourse } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
 
 class DisplayCourse extends Component {
 
     componentDidMount() {
-        this.props.fetchConfigLanguages()
+        this.props.fetchConfigLanguages(this.props.firebase)
     }
 
     /*
@@ -36,7 +37,7 @@ class DisplayCourse extends Component {
         if (!this.props.curCourse) {
             return <p>Loading...</p>;
         }
-        const { curCourse, languageConfig, deleteCourseA, history } = this.props
+        const { curCourse, languageConfig, deleteCourse, history, firebase } = this.props
 
         //transmutate course values
         const handleImageSrc = () => curCourse.image ? curCourse.image : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
@@ -49,23 +50,25 @@ class DisplayCourse extends Component {
             history.push(`${curCourse.id}/edit`)
         }
 
+        const redirectCb = () => history.push('/courses')
+
         return (
             <div>
                 <Card>
                     <CardHeader tag="h2">
                         {curCourse.name}
-                        <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourseA(curCourse.id)}>Delete</Button>
+                        <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourse({ firebase, id: curCourse.id, redirectCb })}>Delete</Button>
                         <Button className="floatRight col-lg-2" color="primary" onClick={() => handleEdit(curCourse.id)}>Edit</Button>
                     </CardHeader>
                     <CardImg top width="50%" src={handleImageSrc()} alt="Card image cap" />
-                    <CardBlock>
+                    <CardBody>
                         <CardTitle>Card teacher name</CardTitle>
                         <CardText>{curCourse.teacherName}</CardText>
                         <CardTitle>Card teacher email</CardTitle>
                         <CardText>{curCourse.teacherEmail}</CardText>
                         <CardTitle>Language</CardTitle>
                         <CardText>
-                            {curCourse.langValue ? curCourse.langValue : curCourse.language}
+                            {curCourse.langValue ? curCourse.langValue : curCourse.language ? curCourse.language : 'NONE' }
                         </CardText>
                         <CardTitle>Description</CardTitle>
                         <CardText>{curCourse.description}</CardText>
@@ -75,17 +78,21 @@ class DisplayCourse extends Component {
                         <CardText>
                             <StarsComponent value={curCourse.rating} />
                         </CardText>
-                    </CardBlock>
+                    </CardBody>
                 </Card>
             </div>
         )
     }
 }
 
-export default withRouter(connect(
-    (state, ownProps) => ({
-        curCourse: fetchCourse(state.crs.courses, ownProps.courseId),
-        languageConfig: state.crs.configCourse.languages
-    }),
-    { fetchConfigLanguages, deleteCourseA }
-)(DisplayCourse))
+export default compose(
+    withFirebase,
+    withRouter,
+    connect(
+        (state, ownProps) => ({
+            curCourse: fetchCourse(state.crs.courses, ownProps.courseId),
+            languageConfig: state.crs.configCourse.languages
+        }),
+        { fetchConfigLanguages, deleteCourse }
+    )
+)(DisplayCourse)

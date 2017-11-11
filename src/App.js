@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { firebaseConnect, isEmpty } from 'react-redux-firebase'
+import { withRouter } from 'react-router'
 import './App.css';
 import Header from './components/Header'
 import Home from './components/Home'
 import Courses from './components/Courses'
+import Top5Courses from './components/Top5Courses'
+import Login from './components/Login'
+import Logout from './components/Logout'
 
 class App extends Component {
 
@@ -12,16 +18,22 @@ class App extends Component {
   // }
 
   render() {
+
     return (
       <div className="App">
-        <div className="Header">
-          <Header />
-        </div>
+        <Header userIn={!isEmpty(this.props.auth)} />
         <Route exact path="/" component={Home} />
         <Route path="/courses" component={Courses} />
+        <Route path="/login" component={Login} />
+        <Route path="/logout" component={Logout} />
+        <Route path="/top5" component={Top5Courses} />
       </div >
     );
   }
 }
 
-export default App;
+App = firebaseConnect([
+])(App)
+export default withRouter(connect(
+  ({ firebase: { auth } }) => ({ auth })
+)(App))

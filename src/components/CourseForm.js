@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { Col, Form, FormGroup, Label } from 'reactstrap'
+import { withRouter } from 'react-router-dom'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
-import { fetchConfigLanguages, addCourseA } from '../reducers/courseReducer'
-import { addCourse } from '../lib/courseFakeService'
+import { fetchConfigLanguages, addCourse } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
+import { withFirebase } from 'react-redux-firebase'
 
 //validation setup
 const vMaxLength25 = vMaxLength(25)
@@ -18,11 +19,13 @@ const vMaxLength50 = vMaxLength(50)
 class CourseForm extends Component {
 
     componentDidMount() {
-        this.props.fetchConfigLanguages()
+        this.props.fetchConfigLanguages(this.props.firebase)
     }
 
     render() {
-        const { handleSubmit, languageConfig } = this.props
+        const { handleSubmit, languageConfig, history, firebase } = this.props
+
+        const redirectCb = () => history.push('/courses')
         return (
             <div>
                 <h2> Adding a course </h2>
@@ -95,7 +98,10 @@ class CourseForm extends Component {
                             <Field component={CommonInput} type="file" name="image" />
                         </Col>
                     </FormGroup>
-                    {<button className="btn btn-primary" onClick={handleSubmit(data => addCourse(data, this.props.addCourseA))} type="submit">Submit</button>}
+                    <button className="btn btn-primary"
+                        onClick={handleSubmit(data =>
+                            this.props.addCourse({ firebase: this.props.firebase, course: data, redirectCb }))}
+                        type="submit">Submit</button>
                 </Form>
             </div >
         )
@@ -104,11 +110,13 @@ class CourseForm extends Component {
 
 CourseForm = connect(
     state => ({ languageConfig: state.crs.configCourse.languages }),
-    { fetchConfigLanguages, addCourseA }
+    { fetchConfigLanguages, addCourse }
 )(CourseForm)
 
 CourseForm = reduxForm({
     form: 'courseForm'
 })(CourseForm)
 
+CourseForm = withFirebase(CourseForm)
+CourseForm = withRouter(CourseForm)
 export default CourseForm

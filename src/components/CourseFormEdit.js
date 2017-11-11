@@ -6,9 +6,9 @@ import { withRouter } from 'react-router-dom'
 import { CommonInput } from './helpers/CommonInput'
 import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
-import { fetchCourse, fetchConfigLanguages, editCourseA } from '../reducers/courseReducer'
-import { editCourse } from '../lib/courseFakeService'
+import { fetchCourse, fetchConfigLanguages, editCourse } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
+import { withFirebase } from 'react-redux-firebase'
 
 //validation setup
 const vMaxLength25 = vMaxLength(25)
@@ -17,16 +17,15 @@ const vMaxLength50 = vMaxLength(50)
 
 class CourseFormEdit extends Component {
 
-    edit(data) {
-        return editCourse({ type: 'EDIT', payload: { source: data, action: this.props.editCourseA } })
-    }
-
     componentDidMount() {
-        this.props.fetchConfigLanguages()
+        this.props.fetchConfigLanguages(this.props.firebase)
     }
 
     render() {
-        const { handleSubmit, languageConfig } = this.props
+        const { handleSubmit, languageConfig, history } = this.props
+
+        const redirectCb = () => history.push('/courses')
+
         return (
             <div>
                 <h2> Editing a course </h2>
@@ -100,7 +99,9 @@ class CourseFormEdit extends Component {
                             <Field component={CommonInput} type="file" name="image" />
                         </Col>
                     </FormGroup>
-                    {<button className="btn btn-primary" onClick={handleSubmit(data => this.edit(data))} type="submit">Save</button>}
+                    {<button className="btn btn-primary" onClick={handleSubmit(data =>
+                        this.props.editCourse({ firebase: this.props.firebase, course: data, redirectCb }))}
+                        type="submit">Save</button>}
                 </Form>
             </div >
         )
@@ -116,7 +117,10 @@ CourseFormEdit = connect(
         initialValues: fetchCourse(state.crs.courses, ownProps.match.params.courseId),
         languageConfig: state.crs.configCourse.languages,
     }),
-    { fetchConfigLanguages, editCourseA }
+    { fetchConfigLanguages, editCourse }
 )(CourseFormEdit)
+
+CourseFormEdit = withFirebase(CourseFormEdit)
+CourseFormEdit = withRouter(CourseFormEdit)
 
 export default CourseFormEdit
