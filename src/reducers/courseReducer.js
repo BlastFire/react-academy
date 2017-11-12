@@ -4,7 +4,10 @@ const initState = {
     courses: [],
     configCourse: {
         languages: []
-    }
+    },
+    coursesNewest: [],
+    coursesUpdated: [],
+    coursesMostRating: []
 }
 
 const COURSES_LOAD = 'COURSES_LOAD'
@@ -12,12 +15,14 @@ const CONFIG_LANGUAGE_LOAD = 'CONFIG_LANGUAGE_LOAD'
 const COURSE_ADD = 'COURSE_ADD'
 const DELETE_COURSE = 'DELETE_COURSE'
 const COURSE_EDIT = 'COURSE_EDIT'
+const COURSES_TOP5 = 'COURSES_TOP5'
 
 const loadCoursesA = courses => ({ type: COURSES_LOAD, payload: courses })
 const loadConfigLanguagesA = langs => ({ type: CONFIG_LANGUAGE_LOAD, payload: langs })
 const addCourseA = course => ({ type: COURSE_ADD, payload: course })
 const deleteCourseA = id => ({ type: DELETE_COURSE, payload: id })
 const editCourseA = course => ({ type: COURSE_EDIT, payload: course })
+export const top5Courses = () => ({ type: COURSES_TOP5 })
 
 //thunk
 export const addCourse = ({ firebase, course, redirectCb }) => dispatch => {
@@ -143,6 +148,13 @@ export const fetchCourse = (courses, id) => courses.find(el => el.id === id)
 //THE REDUCER FUNCTION
 export default (state = initState, action) => {
     switch (action.type) {
+        case COURSES_TOP5:
+            return {
+                ...state,
+                coursesNewest: [...state.courses].sort((obj1, obj2) => Number(obj2.creationDate) - Number(obj1.creationDate)).slice(0, 5),
+                coursesUpdated: [...state.courses].sort((obj1, obj2) => Number(obj2.lastUpdateDate) - Number(obj1.lastUpdateDate)).slice(0, 5),
+                coursesMostRating: [...state.courses].sort((obj1, obj2) => Number(obj2.rating) - Number(obj1.rating)).slice(0, 5)
+            }
         case COURSES_LOAD:
             return { ...state, courses: action.payload }
         case COURSE_ADD:
