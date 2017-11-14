@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { Col, Form, FormGroup, Label } from 'reactstrap'
 import { withRouter } from 'react-router-dom'
 import { CommonInput } from './helpers/CommonInput'
@@ -108,15 +109,14 @@ class CourseForm extends Component {
     }
 }
 
-CourseForm = connect(
-    state => ({ languageConfig: state.crs.configCourse.languages }),
-    { fetchConfigLanguages, addCourse }
+export default compose(
+    connect(
+        state => ({ languageConfig: state.crs.configCourse.languages }),
+        { fetchConfigLanguages, addCourse }
+    ),
+    withFirebase,
+    withRouter,
+    reduxForm({
+        form: 'courseForm'
+    })
 )(CourseForm)
-
-CourseForm = reduxForm({
-    form: 'courseForm'
-})(CourseForm)
-
-CourseForm = withFirebase(CourseForm)
-CourseForm = withRouter(CourseForm)
-export default CourseForm

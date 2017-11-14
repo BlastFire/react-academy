@@ -20,14 +20,60 @@ class Top5Courses extends Component {
         console.log(coursesNewest)
 
         return (
-            <h1>asd</h1>
+            <CardDeck>
+                <Card>
+                    <CardHeader>Top 5 newest courses</CardHeader>
+                    {
+                        coursesNewest.map(course => {
+                            return (
+                                <CardBody>
+                                    <CardTitle>{course.name}</CardTitle>
+                                    <CardSubtitle>{course.category}</CardSubtitle>
+                                    <CardText>{course.description}</CardText>
+                                    <Button>Go to Course Details</Button>
+                                </CardBody>
+                            )
+                        })
+                    }
+                </Card>
+                <Card>
+                    <CardHeader>Top 5 last updated courses</CardHeader>
+                    {
+                        coursesUpdated.map(course => {
+                            return (
+                                <CardBody>
+                                    <CardTitle>{course.name}</CardTitle>
+                                    <CardSubtitle>{course.category}</CardSubtitle>
+                                    <CardText>{course.description}</CardText>
+                                    <Button>Go to Course Details</Button>
+                                </CardBody>
+                            )
+                        })
+                    }
+                </Card>
+                <Card>
+                    <CardHeader>Top 5 rated courses</CardHeader>
+                    {
+                        coursesMostRating.map(course => {
+                            return (
+                                <CardBody>
+                                    <CardTitle>{course.name}</CardTitle>
+                                    <CardSubtitle>{course.category}</CardSubtitle>
+                                    <CardText>{course.description}</CardText>
+                                    <Button>Go to Course Details</Button>
+                                </CardBody>
+                            )
+                        })
+                    }
+                </Card>
+            </CardDeck>
         )
     }
 }
 
 export default compose(
     connect(
-        (state) => ({ coursesNewest: state.coursesNewest, coursesUpdated: state.coursesUpdated, coursesMostRating: state.coursesMostRating }),
+        (state) => ({ coursesNewest: state.crs.coursesNewest, coursesUpdated: state.crs.coursesUpdated, coursesMostRating: state.crs.coursesMostRating }),
         { top5Courses }
     )
 )(Top5Courses)

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { ListGroup } from 'reactstrap'
 import { withRouter } from 'react-router-dom'
 import { withFirebase } from 'react-redux-firebase'
@@ -9,14 +10,10 @@ import CourseAdd from './CourseAdd'
 
 class CourseList extends Component {
 
-    componentDidMount() {
-        this.props.fetchCourses(this.props.firebase)
-    }
-    
     onCourseAddHandler = (e) => {
         this.props.history.push('/courses/add')
     }
-    
+
     render() {
         return (
             <ListGroup>
@@ -29,7 +26,11 @@ class CourseList extends Component {
     }
 }
 
-export default withFirebase(withRouter(connect(
-    (state) => ({ courses: state.crs.courses }),
-    { fetchCourses }
-)(CourseList)))
+export default compose(
+    withFirebase,
+    withRouter,
+    connect(
+        (state) => ({ courses: state.crs.courses }),
+        { fetchCourses }
+    )
+)(CourseList)

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { firebaseConnect, isEmpty } from 'react-redux-firebase'
+import { compose } from 'redux'
+import { withFirebase, isEmpty } from 'react-redux-firebase'
 import { withRouter } from 'react-router'
 import './App.css';
+import { fetchCourses } from './reducers/courseReducer'
 import Header from './components/Header'
 import Home from './components/Home'
 import Courses from './components/Courses'
@@ -16,6 +18,10 @@ class App extends Component {
   // submit(e) {
   //   console.log(e)
   // }
+
+  componentDidMount() {
+    this.props.fetchCourses(this.props.firebase)
+  }
 
   render() {
 
@@ -32,8 +38,11 @@ class App extends Component {
   }
 }
 
-App = firebaseConnect([
-])(App)
-export default withRouter(connect(
-  ({ firebase: { auth } }) => ({ auth })
-)(App))
+export default compose(
+  withFirebase,
+  withRouter,
+  connect(
+    ({ firebase: { auth } }) => ({ auth }),
+    { fetchCourses }
+  )
+)(App)

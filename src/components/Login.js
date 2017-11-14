@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Button } from 'reactstrap';
 import { connect } from 'react-redux'
-import { firebaseConnect } from 'react-redux-firebase'
+import { compose } from 'redux'
+import { withFirebase } from 'react-redux-firebase'
 import { withRouter } from 'react-router'
 
 
@@ -23,8 +24,11 @@ class Login extends Component {
     )
   }
 }
-const LoginWrapped = firebaseConnect([
-])(Login)
-export default withRouter(connect(
-  ({ firebase: { auth } }) => ({ auth })
-)(LoginWrapped))
+
+export default compose(
+  connect(
+    ({ firebase: { auth } }) => ({ auth })
+  ),
+  withRouter,
+  withFirebase
+)(Login)
