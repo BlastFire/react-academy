@@ -34,7 +34,7 @@ describe('Testing course reducer', () => {
         expect(result).toEqual(endState)
     })
 
-    test.skip('test COURSES_TOP5', () => {
+    test.skip('test COURSES_TOP5 no filtering', () => {
         const startState = {
             courses: [
                 { creationDate: 3, lastUpdateDate: 3, rating: 3 },
@@ -90,6 +90,66 @@ describe('Testing course reducer', () => {
         expect(result).toEqual(endState)
 
     })
+
+    test('test COURSES_TOP5 filtering', () => {
+        const startState = {
+            courses: [
+                { creationDate: 3, lastUpdateDate: 3, rating: 3, invisible: false },
+                { creationDate: 1, lastUpdateDate: 1, rating: 1, invisible: false },
+                { creationDate: 43, lastUpdateDate: 43, rating: 43, invisible: false },
+                { creationDate: 643, lastUpdateDate: 643, rating: 28, invisible: true },
+                { creationDate: 23, lastUpdateDate: 23, rating: 23, invisible: false },
+                { creationDate: 13, lastUpdateDate: 13, rating: 13, invisible: false },
+                { creationDate: 33, lastUpdateDate: 33, rating: 33, invisible: false },
+                { creationDate: 53, lastUpdateDate: 53, rating: 53, invisible: false }
+            ],
+            coursesNewest: [],
+            coursesUpdated: [],
+            coursesMostRating: []
+        }
+
+        const endState = {
+            courses: [
+                { creationDate: 3, lastUpdateDate: 3, rating: 3, invisible: false },
+                { creationDate: 1, lastUpdateDate: 1, rating: 1, invisible: false },
+                { creationDate: 43, lastUpdateDate: 43, rating: 43, invisible: false },
+                { creationDate: 643, lastUpdateDate: 643, rating: 28, invisible: true },
+                { creationDate: 23, lastUpdateDate: 23, rating: 23, invisible: false },
+                { creationDate: 13, lastUpdateDate: 13, rating: 13, invisible: false },
+                { creationDate: 33, lastUpdateDate: 33, rating: 33, invisible: false },
+                { creationDate: 53, lastUpdateDate: 53, rating: 53, invisible: false }
+            ],
+            coursesNewest: [
+                { creationDate: 53, lastUpdateDate: 53, rating: 53, invisible: false },
+                { creationDate: 43, lastUpdateDate: 43, rating: 43, invisible: false },
+                { creationDate: 33, lastUpdateDate: 33, rating: 33, invisible: false },
+                { creationDate: 23, lastUpdateDate: 23, rating: 23, invisible: false },
+                { creationDate: 13, lastUpdateDate: 13, rating: 13, invisible: false },
+            ],
+            coursesUpdated: [
+                { creationDate: 53, lastUpdateDate: 53, rating: 53, invisible: false },
+                { creationDate: 43, lastUpdateDate: 43, rating: 43, invisible: false },
+                { creationDate: 33, lastUpdateDate: 33, rating: 33, invisible: false },
+                { creationDate: 23, lastUpdateDate: 23, rating: 23, invisible: false },
+                { creationDate: 13, lastUpdateDate: 13, rating: 13, invisible: false },
+            ],
+            coursesMostRating: [
+                { creationDate: 53, lastUpdateDate: 53, rating: 53, invisible: false },
+                { creationDate: 43, lastUpdateDate: 43, rating: 43, invisible: false },
+                { creationDate: 33, lastUpdateDate: 33, rating: 33, invisible: false },
+                { creationDate: 23, lastUpdateDate: 23, rating: 23, invisible: false },
+                { creationDate: 13, lastUpdateDate: 13, rating: 13, invisible: false },
+
+            ]
+        }
+
+        const action = { type: 'COURSES_TOP5', payload: true }
+        const result = reducer(startState, action)
+        expect(result).toEqual(endState)
+
+    })
+
+
 
     test.skip('test default action', () => {
         const startState = {
@@ -165,7 +225,5 @@ describe('Testing course reducer', () => {
         const action = { type: 'COURSE_TOGGLE', payload: 3 }
         const result = reducer(startState, action)
         expect(result).toEqual(endState)
-
     })
-
 })

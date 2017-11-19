@@ -24,7 +24,7 @@ const addCourseA = course => ({ type: COURSE_ADD, payload: course })
 const deleteCourseA = id => ({ type: DELETE_COURSE, payload: id })
 const editCourseA = course => ({ type: COURSE_EDIT, payload: course })
 const toggleCourseA = id => ({ type: COURSE_TOGGLE, payload: id })
-export const top5Courses = () => ({ type: COURSES_TOP5 })
+export const top5Courses = (filtered = false) => ({ type: COURSES_TOP5, payload: filtered })
 
 //thunk
 
@@ -171,9 +171,15 @@ export default (state = initState, action) => {
         case COURSES_TOP5:
             return {
                 ...state,
-                coursesNewest: [...state.courses].sort((obj1, obj2) => Number(obj2.creationDate) - Number(obj1.creationDate)).slice(0, 5),
-                coursesUpdated: [...state.courses].sort((obj1, obj2) => Number(obj2.lastUpdateDate) - Number(obj1.lastUpdateDate)).slice(0, 5),
-                coursesMostRating: [...state.courses].sort((obj1, obj2) => Number(obj2.rating) - Number(obj1.rating)).slice(0, 5)
+                coursesNewest: [...state.courses]
+                    .filter(c => action.payload && c.invisible ? false : true)
+                    .sort((obj1, obj2) => Number(obj2.creationDate) - Number(obj1.creationDate)).slice(0, 5),
+                coursesUpdated: [...state.courses]
+                    .filter(c => action.payload && c.invisible ? false : true)
+                    .sort((obj1, obj2) => Number(obj2.lastUpdateDate) - Number(obj1.lastUpdateDate)).slice(0, 5),
+                coursesMostRating: [...state.courses]
+                    .filter(c => action.payload && c.invisible ? false : true)
+                    .sort((obj1, obj2) => Number(obj2.rating) - Number(obj1.rating)).slice(0, 5)
             }
         case COURSES_LOAD:
             return { ...state, courses: action.payload }

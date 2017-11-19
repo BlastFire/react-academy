@@ -11,7 +11,7 @@ import { top5Courses } from '../reducers/courseReducer'
 class Top5Courses extends Component {
 
     componentDidMount() {
-        this.props.top5Courses()
+        this.props.top5Courses(true)
     }
 
     render() {
@@ -25,7 +25,7 @@ class Top5Courses extends Component {
                     {
                         coursesNewest.map(course => {
                             return (
-                                <CardBody>
+                                <CardBody key={course.id}>
                                     <CardTitle>{course.name}</CardTitle>
                                     <CardSubtitle>{course.category}</CardSubtitle>
                                     <CardText>{course.description}</CardText>
@@ -40,7 +40,7 @@ class Top5Courses extends Component {
                     {
                         coursesUpdated.map(course => {
                             return (
-                                <CardBody>
+                                <CardBody key={course.id}>
                                     <CardTitle>{course.name}</CardTitle>
                                     <CardSubtitle>{course.category}</CardSubtitle>
                                     <CardText>{course.description}</CardText>
@@ -55,7 +55,7 @@ class Top5Courses extends Component {
                     {
                         coursesMostRating.map(course => {
                             return (
-                                <CardBody>
+                                <CardBody key={course.id}>
                                     <CardTitle>{course.name}</CardTitle>
                                     <CardSubtitle>{course.category}</CardSubtitle>
                                     <CardText>{course.description}</CardText>
