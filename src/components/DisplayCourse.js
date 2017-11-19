@@ -5,7 +5,7 @@ import {
     Card, CardImg, CardText, CardBody, CardTitle, CardHeader, Button
 } from 'reactstrap';
 import { withRouter } from 'react-router-dom'
-import { withFirebase } from 'react-redux-firebase'
+import { withFirebase, isEmpty } from 'react-redux-firebase'
 import * as moment from 'moment'
 import './css/DisplayCourse.css'
 import { fetchCourse, fetchConfigLanguages, deleteCourse } from '../reducers/courseReducer'
@@ -37,7 +37,7 @@ class DisplayCourse extends Component {
         if (!this.props.curCourse) {
             return <p>Loading...</p>;
         }
-        const { curCourse, languageConfig, deleteCourse, history, firebase } = this.props
+        const { curCourse, languageConfig, deleteCourse, history, fAuth, firebase } = this.props
 
         //transmutate course values
         const handleImageSrc = () => curCourse.image ? curCourse.image : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
@@ -57,8 +57,15 @@ class DisplayCourse extends Component {
                 <Card>
                     <CardHeader tag="h2">
                         {curCourse.name}
-                        <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourse({ firebase, id: curCourse.id, redirectCb })}>Delete</Button>
-                        <Button className="floatRight col-lg-2" color="primary" onClick={() => handleEdit(curCourse.id)}>Edit</Button>
+                        {
+                            !isEmpty(fAuth) &&
+                            <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourse({ firebase, id: curCourse.id, redirectCb })}>Delete</Button>
+                        }
+                        {
+                            !isEmpty(fAuth) &&
+                            <Button className="floatRight col-lg-2" color="primary" onClick={() => handleEdit(curCourse.id)}>Edit</Button>
+                        }
+
                     </CardHeader>
                     <CardImg top width="50%" src={handleImageSrc()} alt="Card image cap" />
                     <CardBody>
@@ -68,7 +75,7 @@ class DisplayCourse extends Component {
                         <CardText>{curCourse.teacherEmail}</CardText>
                         <CardTitle>Language</CardTitle>
                         <CardText>
-                            {curCourse.langValue ? curCourse.langValue : curCourse.language ? curCourse.language : 'NONE' }
+                            {curCourse.langValue ? curCourse.langValue : curCourse.language ? curCourse.language : 'NONE'}
                         </CardText>
                         <CardTitle>Description</CardTitle>
                         <CardText>{curCourse.description}</CardText>
@@ -91,7 +98,8 @@ export default compose(
     connect(
         (state, ownProps) => ({
             curCourse: fetchCourse(state.crs.courses, ownProps.courseId),
-            languageConfig: state.crs.configCourse.languages
+            languageConfig: state.crs.configCourse.languages,
+            fAuth: state.firebase.auth
         }),
         { fetchConfigLanguages, deleteCourse }
     )

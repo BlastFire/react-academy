@@ -42,7 +42,7 @@ export default compose(
   withFirebase,
   withRouter,
   connect(
-    ({ firebase: { auth } }) => ({ auth }),
+    ({ firebase: { auth } }) => ({ auth }),   // eq. (state) => ({ auth: state.firebase.auth }),
     { fetchCourses }
   )
 )(App)
