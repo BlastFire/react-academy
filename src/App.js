@@ -12,6 +12,7 @@ import Courses from './components/Courses'
 import Top5Courses from './components/Top5Courses'
 import Login from './components/Login'
 import Logout from './components/Logout'
+import Register from './components/Register'
 
 class App extends Component {
 
@@ -31,6 +32,7 @@ class App extends Component {
         <Route exact path="/" component={Home} />
         <Route path="/courses" component={Courses} />
         <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
         <Route path="/logout" component={Logout} />
         <Route path="/top5" component={Top5Courses} />
       </div >
