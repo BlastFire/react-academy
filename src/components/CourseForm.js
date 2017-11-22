@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { Col, Form, FormGroup, Label } from 'reactstrap'
 import { withRouter } from 'react-router-dom'
 import { CommonInput } from './helpers/CommonInput'
@@ -8,7 +9,6 @@ import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
 import { fetchConfigLanguages, addCourse } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
-import { withFirebase } from 'react-redux-firebase'
 
 //validation setup
 const vMaxLength25 = vMaxLength(25)
@@ -19,11 +19,11 @@ const vMaxLength50 = vMaxLength(50)
 class CourseForm extends Component {
 
     componentDidMount() {
-        this.props.fetchConfigLanguages(this.props.firebase)
+        this.props.fetchConfigLanguages()
     }
 
     render() {
-        const { handleSubmit, languageConfig, history, firebase } = this.props
+        const { handleSubmit, languageConfig, history } = this.props
 
         const redirectCb = () => history.push('/courses')
         return (
@@ -100,7 +100,7 @@ class CourseForm extends Component {
                     </FormGroup>
                     <button className="btn btn-primary"
                         onClick={handleSubmit(data =>
-                            this.props.addCourse({ firebase: this.props.firebase, course: data, redirectCb }))}
+                            this.props.addCourse({ course: data, redirectCb }))}
                         type="submit">Submit</button>
                 </Form>
             </div >
@@ -108,15 +108,13 @@ class CourseForm extends Component {
     }
 }
 
-CourseForm = connect(
-    state => ({ languageConfig: state.crs.configCourse.languages }),
-    { fetchConfigLanguages, addCourse }
+export default compose(
+    connect(
+        state => ({ languageConfig: state.crs.configCourse.languages }),
+        { fetchConfigLanguages, addCourse }
+    ),
+    withRouter,
+    reduxForm({
+        form: 'courseForm'
+    })
 )(CourseForm)
-
-CourseForm = reduxForm({
-    form: 'courseForm'
-})(CourseForm)
-
-CourseForm = withFirebase(CourseForm)
-CourseForm = withRouter(CourseForm)
-export default CourseForm

@@ -1,35 +1,45 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { ListGroup } from 'reactstrap'
 import { withRouter } from 'react-router-dom'
-import { withFirebase } from 'react-redux-firebase'
-import { fetchCourses } from '../reducers/courseReducer'
+import { isEmpty } from 'react-redux-firebase'
+import { fetchCourses, toggleCourse } from '../reducers/courseReducer'
 import CourseListItem from './CourseListItem'
 import CourseAdd from './CourseAdd'
 
 class CourseList extends Component {
 
-    componentDidMount() {
-        this.props.fetchCourses(this.props.firebase)
-    }
-    
     onCourseAddHandler = (e) => {
         this.props.history.push('/courses/add')
     }
-    
+
     render() {
+        const { fAuth, toggleCourse } = this.props
         return (
             <ListGroup>
-                <CourseAdd onClick={this.onCourseAddHandler} />
                 {
-                    this.props.courses.map(course => !course.invisible ? <CourseListItem key={course.id} {...course} /> : '')
+                    !isEmpty(fAuth) && <CourseAdd onClick={this.onCourseAddHandler} />
+                }
+                {
+                    this.props.courses.map(course => {
+                        if (!isEmpty(fAuth) || !course.invisible) {
+                            return <CourseListItem action={toggleCourse} key={course.id} {...course} />
+                        }
+                    })
                 }
             </ListGroup>
         )
     }
 }
 
-export default withFirebase(withRouter(connect(
-    (state) => ({ courses: state.crs.courses }),
-    { fetchCourses }
-)(CourseList)))
+export default compose(
+    withRouter,
+    connect(
+        (state) => ({
+            courses: state.crs.courses,
+            fAuth: state.firebase.auth
+        }),
+        { fetchCourses, toggleCourse }
+    )
+)(CourseList)

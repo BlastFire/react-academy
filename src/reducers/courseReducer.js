@@ -4,7 +4,10 @@ const initState = {
     courses: [],
     configCourse: {
         languages: []
-    }
+    },
+    coursesNewest: [],
+    coursesUpdated: [],
+    coursesMostRating: []
 }
 
 const COURSES_LOAD = 'COURSES_LOAD'
@@ -12,15 +15,34 @@ const CONFIG_LANGUAGE_LOAD = 'CONFIG_LANGUAGE_LOAD'
 const COURSE_ADD = 'COURSE_ADD'
 const DELETE_COURSE = 'DELETE_COURSE'
 const COURSE_EDIT = 'COURSE_EDIT'
+const COURSES_TOP5 = 'COURSES_TOP5'
+const COURSE_TOGGLE = 'COURSE_TOGGLE'
 
 const loadCoursesA = courses => ({ type: COURSES_LOAD, payload: courses })
 const loadConfigLanguagesA = langs => ({ type: CONFIG_LANGUAGE_LOAD, payload: langs })
 const addCourseA = course => ({ type: COURSE_ADD, payload: course })
 const deleteCourseA = id => ({ type: DELETE_COURSE, payload: id })
 const editCourseA = course => ({ type: COURSE_EDIT, payload: course })
+const toggleCourseA = id => ({ type: COURSE_TOGGLE, payload: id })
+export const top5Courses = (filtered = false) => ({ type: COURSES_TOP5, payload: filtered })
 
 //thunk
-export const addCourse = ({ firebase, course, redirectCb }) => dispatch => {
+
+export const toggleCourse = (id) => (dispatch, getState, getFirebase) => {
+    const firebase = getFirebase()
+    const ref = firebase.database().ref()
+    ref.child('/courses/' + id).once('value').then(snapshot => {
+        const c = snapshot.val()
+        ref.child('/courses/' + id).update({ invisible: !c.invisible }).then(snapshot => {
+            dispatch(toggleCourseA(id))
+        }, err => console.log(err))
+    }, err => console.log(err))
+}
+
+export const addCourse = ({ course, redirectCb }) => (dispatch, getState, getFirebase) => {
+
+    const firebase = getFirebase()
+
     //FILE BASE64 ENCODE so we can store it in the object (TODO: diff approach, when we are going to store them into a remote storage)
     const imageType = /^image\//;
 
@@ -59,7 +81,9 @@ export const addCourse = ({ firebase, course, redirectCb }) => dispatch => {
     }
 }
 
-export const editCourse = ({ firebase, course, redirectCb }) => dispatch => {
+export const editCourse = ({ course, redirectCb }) => (dispatch, getState, getFirebase) => {
+
+    const firebase = getFirebase()
 
     //cleaning some helper properties
     delete course.langValue
@@ -101,7 +125,8 @@ export const editCourse = ({ firebase, course, redirectCb }) => dispatch => {
     }
 }
 
-export const deleteCourse = ({ firebase, id, redirectCb }) => dispatch => {
+export const deleteCourse = ({ id, redirectCb }) => (dispatch, getState, getFirebase) => {
+    const firebase = getFirebase()
     let updates = {}
     updates['/courses/' + id] = null
 
@@ -112,9 +137,10 @@ export const deleteCourse = ({ firebase, id, redirectCb }) => dispatch => {
 
 }
 
-export const fetchConfigLanguages = firebase => (dispatch, getState) => {
+export const fetchConfigLanguages = () => (dispatch, getState, getFirebase) => {
 
     const { crs: { configCourse: { languages } } } = getState()
+    const firebase = getFirebase()
 
     if (languages.length <= 0) {
         getConfigLanguageData(firebase).then(snapshot => {
@@ -127,7 +153,8 @@ export const fetchConfigLanguages = firebase => (dispatch, getState) => {
     }
 }
 
-export const fetchCourses = firebase => dispatch => {
+export const fetchCourses = () => (dispatch, getState, getFirebase) => {
+    const firebase = getFirebase()
     getCourses(firebase).then(snapshot => {
         const courses = []
         snapshot.forEach(userSnapShot => {
@@ -143,6 +170,26 @@ export const fetchCourse = (courses, id) => courses.find(el => el.id === id)
 //THE REDUCER FUNCTION
 export default (state = initState, action) => {
     switch (action.type) {
+        case COURSE_TOGGLE:
+            return {
+                ...state, courses: [...state.courses.map((course) => {
+                    course.id === action.payload ? course.invisible = !course.invisible : course.invisible
+                    return course
+                })]
+            }
+        case COURSES_TOP5:
+            return {
+                ...state,
+                coursesNewest: [...state.courses]
+                    .filter(c => action.payload && c.invisible ? false : true)
+                    .sort((obj1, obj2) => Number(obj2.creationDate) - Number(obj1.creationDate)).slice(0, 5),
+                coursesUpdated: [...state.courses]
+                    .filter(c => action.payload && c.invisible ? false : true)
+                    .sort((obj1, obj2) => Number(obj2.lastUpdateDate) - Number(obj1.lastUpdateDate)).slice(0, 5),
+                coursesMostRating: [...state.courses]
+                    .filter(c => action.payload && c.invisible ? false : true)
+                    .sort((obj1, obj2) => Number(obj2.rating) - Number(obj1.rating)).slice(0, 5)
+            }
         case COURSES_LOAD:
             return { ...state, courses: action.payload }
         case COURSE_ADD:
