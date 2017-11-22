@@ -28,7 +28,8 @@ export const top5Courses = (filtered = false) => ({ type: COURSES_TOP5, payload:
 
 //thunk
 
-export const toggleCourse = ({ firebase, id }) => dispatch => {
+export const toggleCourse = (id) => (dispatch, getState, getFirebase) => {
+    const firebase = getFirebase()
     const ref = firebase.database().ref()
     ref.child('/courses/' + id).once('value').then(snapshot => {
         const c = snapshot.val()
@@ -38,7 +39,10 @@ export const toggleCourse = ({ firebase, id }) => dispatch => {
     }, err => console.log(err))
 }
 
-export const addCourse = ({ firebase, course, redirectCb }) => dispatch => {
+export const addCourse = ({ course, redirectCb }) => (dispatch, getState, getFirebase) => {
+
+    const firebase = getFirebase()
+
     //FILE BASE64 ENCODE so we can store it in the object (TODO: diff approach, when we are going to store them into a remote storage)
     const imageType = /^image\//;
 
@@ -77,7 +81,9 @@ export const addCourse = ({ firebase, course, redirectCb }) => dispatch => {
     }
 }
 
-export const editCourse = ({ firebase, course, redirectCb }) => dispatch => {
+export const editCourse = ({ course, redirectCb }) => (dispatch, getState, getFirebase) => {
+
+    const firebase = getFirebase()
 
     //cleaning some helper properties
     delete course.langValue
@@ -119,7 +125,8 @@ export const editCourse = ({ firebase, course, redirectCb }) => dispatch => {
     }
 }
 
-export const deleteCourse = ({ firebase, id, redirectCb }) => dispatch => {
+export const deleteCourse = ({ id, redirectCb }) => (dispatch, getState, getFirebase) => {
+    const firebase = getFirebase()
     let updates = {}
     updates['/courses/' + id] = null
 
@@ -130,9 +137,10 @@ export const deleteCourse = ({ firebase, id, redirectCb }) => dispatch => {
 
 }
 
-export const fetchConfigLanguages = firebase => (dispatch, getState) => {
+export const fetchConfigLanguages = () => (dispatch, getState, getFirebase) => {
 
     const { crs: { configCourse: { languages } } } = getState()
+    const firebase = getFirebase()
 
     if (languages.length <= 0) {
         getConfigLanguageData(firebase).then(snapshot => {
@@ -145,7 +153,8 @@ export const fetchConfigLanguages = firebase => (dispatch, getState) => {
     }
 }
 
-export const fetchCourses = firebase => dispatch => {
+export const fetchCourses = () => (dispatch, getState, getFirebase) => {
+    const firebase = getFirebase()
     getCourses(firebase).then(snapshot => {
         const courses = []
         snapshot.forEach(userSnapShot => {

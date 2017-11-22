@@ -5,7 +5,7 @@ import {
     Card, CardImg, CardText, CardBody, CardTitle, CardHeader, Button
 } from 'reactstrap';
 import { withRouter } from 'react-router-dom'
-import { withFirebase, isEmpty } from 'react-redux-firebase'
+import { isEmpty } from 'react-redux-firebase'
 import * as moment from 'moment'
 import './css/DisplayCourse.css'
 import { fetchCourse, fetchConfigLanguages, deleteCourse } from '../reducers/courseReducer'
@@ -14,7 +14,7 @@ import StarsComponent from './FormComponents/StarComponent'
 class DisplayCourse extends Component {
 
     componentDidMount() {
-        this.props.fetchConfigLanguages(this.props.firebase)
+        this.props.fetchConfigLanguages()
     }
 
     /*
@@ -37,7 +37,7 @@ class DisplayCourse extends Component {
         if (!this.props.curCourse) {
             return <p>Loading...</p>;
         }
-        const { curCourse, languageConfig, deleteCourse, history, fAuth, firebase } = this.props
+        const { curCourse, languageConfig, deleteCourse, history, fAuth } = this.props
 
         //transmutate course values
         const handleImageSrc = () => curCourse.image ? curCourse.image : "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
@@ -59,7 +59,7 @@ class DisplayCourse extends Component {
                         {curCourse.name}
                         {
                             !isEmpty(fAuth) &&
-                            <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourse({ firebase, id: curCourse.id, redirectCb })}>Delete</Button>
+                            <Button className="floatRight col-lg-2" color="danger" onClick={() => deleteCourse({ id: curCourse.id, redirectCb })}>Delete</Button>
                         }
                         {
                             !isEmpty(fAuth) &&
@@ -93,7 +93,6 @@ class DisplayCourse extends Component {
 }
 
 export default compose(
-    withFirebase,
     withRouter,
     connect(
         (state, ownProps) => ({

@@ -9,7 +9,6 @@ import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
 import { fetchConfigLanguages, addCourse } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
-import { withFirebase } from 'react-redux-firebase'
 
 //validation setup
 const vMaxLength25 = vMaxLength(25)
@@ -20,11 +19,11 @@ const vMaxLength50 = vMaxLength(50)
 class CourseForm extends Component {
 
     componentDidMount() {
-        this.props.fetchConfigLanguages(this.props.firebase)
+        this.props.fetchConfigLanguages()
     }
 
     render() {
-        const { handleSubmit, languageConfig, history, firebase } = this.props
+        const { handleSubmit, languageConfig, history } = this.props
 
         const redirectCb = () => history.push('/courses')
         return (
@@ -101,7 +100,7 @@ class CourseForm extends Component {
                     </FormGroup>
                     <button className="btn btn-primary"
                         onClick={handleSubmit(data =>
-                            this.props.addCourse({ firebase: this.props.firebase, course: data, redirectCb }))}
+                            this.props.addCourse({ course: data, redirectCb }))}
                         type="submit">Submit</button>
                 </Form>
             </div >
@@ -114,7 +113,6 @@ export default compose(
         state => ({ languageConfig: state.crs.configCourse.languages }),
         { fetchConfigLanguages, addCourse }
     ),
-    withFirebase,
     withRouter,
     reduxForm({
         form: 'courseForm'

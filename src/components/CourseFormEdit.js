@@ -9,7 +9,6 @@ import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
 import { fetchCourse, fetchConfigLanguages, editCourse } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
-import { withFirebase } from 'react-redux-firebase'
 
 //validation setup
 const vMaxLength25 = vMaxLength(25)
@@ -19,7 +18,7 @@ const vMaxLength50 = vMaxLength(50)
 class CourseFormEdit extends Component {
 
     componentDidMount() {
-        this.props.fetchConfigLanguages(this.props.firebase)
+        this.props.fetchConfigLanguages()
     }
 
     render() {
@@ -101,7 +100,7 @@ class CourseFormEdit extends Component {
                         </Col>
                     </FormGroup>
                     {<button className="btn btn-primary" onClick={handleSubmit(data =>
-                        this.props.editCourse({ firebase: this.props.firebase, course: data, redirectCb }))}
+                        this.props.editCourse({ course: data, redirectCb }))}
                         type="submit">Save</button>}
                 </Form>
             </div >
@@ -117,7 +116,6 @@ export default compose(
         }),
         { fetchConfigLanguages, editCourse }
     ),
-    withFirebase,
     withRouter,
     reduxForm({
         form: 'courseForm'

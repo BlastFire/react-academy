@@ -5,12 +5,12 @@ import { ListGroupItem, Button } from 'reactstrap'
 import './css/CourseItem.css'
 import './css/DisplayCourse.css'
 import { withRouter } from 'react-router-dom'
-import { withFirebase, isEmpty } from 'react-redux-firebase'
+import { isEmpty } from 'react-redux-firebase'
 
 const CourseListItem = ({ id, name, invisible, history, match, action, firebase, auth }) => {
 
     const onClick = e => {
-        action({ firebase, id })
+        action(id)
 
         /*
         disable propagation on the click event,
@@ -33,7 +33,6 @@ const CourseListItem = ({ id, name, invisible, history, match, action, firebase,
 }
 
 export default compose(
-    withFirebase,
     withRouter,
     connect(
         ({ firebase: { auth } }) => ({ auth })
