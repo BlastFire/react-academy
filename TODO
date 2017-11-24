@@ -1,3 +1,6 @@
+5. navigating back after you login, check if user is logged and hide the form
+5.1 same for register
+
 4. dont make firebase calls all the time. check in state
 1. fix the bug with double dash in url
 2. refactor edit and add forms for courses ( maybe with HOC )

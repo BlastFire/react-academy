@@ -1,12 +1,22 @@
 import React from 'react'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
+import { withFirebase } from 'react-redux-firebase'
 import { Col, Button, Form, FormGroup, Label, Input, Container } from 'reactstrap'
 import { CommonInput } from './helpers/CommonInput'
+import { withRouter } from 'react-router';
 
 const Register = props => {
 
-    const { handleSubmit } = props
+    const { handleSubmit, firebase, history } = props
+
+    const register = ({ email, password }) => {
+        firebase.createUser({ email, password }).then((response) => {
+            history.push(`/`)
+        }, error => {
+            console.log(`Oops: ${error}`)
+        })
+    }
 
     return (
         <Container>
@@ -25,7 +35,7 @@ const Register = props => {
                 </FormGroup>
                 <FormGroup row>
                     <Col sm={{ size: 5, offset: 2 }}>
-                        <Button type="submit" onClick={handleSubmit(data => console.log(data))}>Register</Button>
+                        <Button type="submit" onClick={handleSubmit(data => register(data))}>Register</Button>
                     </Col>
                 </FormGroup>
             </Form>
@@ -34,6 +44,8 @@ const Register = props => {
 }
 
 export default compose(
+    withFirebase,
+    withRouter,
     reduxForm({
         form: 'registerForm'
     })

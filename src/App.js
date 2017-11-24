@@ -26,6 +26,8 @@ class App extends Component {
 
   render() {
 
+    //console.log(React.version)
+
     return (
       <div className="App">
         <Header userIn={!isEmpty(this.props.auth)} />

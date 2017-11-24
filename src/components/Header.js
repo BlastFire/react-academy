@@ -11,10 +11,10 @@ const authLinksHelper = userIn => {
         ) :
         (
             [
-                <NavItem>
+                <NavItem key="reg">
                     <NavLink tag={Link} to="/register">Register</NavLink>
                 </NavItem>,
-                <NavItem>
+                <NavItem key="login">
                     <NavLink tag={Link} to="/login">Login</NavLink>
                 </NavItem>
             ]
