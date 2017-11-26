@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import { withRouter } from 'react-router'
 
@@ -11,14 +12,14 @@ class Logout extends Component {
     }
 
     render() {
-        return (
-            <div>
-            </div>
-        )
+        return null
     }
 }
-const LogoutWrapped = firebaseConnect([
-])(Logout)
-export default withRouter(connect(
-    ({ firebase: { auth } }) => ({ auth })
-)(LogoutWrapped))
+
+export default compose(
+    firebaseConnect(),
+    withRouter,
+    connect(
+        ({ firebase: { auth } }) => ({ auth })
+    )
+)(Logout)

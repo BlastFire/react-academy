@@ -17,18 +17,18 @@ class CourseList extends Component {
     render() {
         const { fAuth, toggleCourse } = this.props
         return (
-            <ListGroup>
-                {
-                    !isEmpty(fAuth) && <CourseAdd onClick={this.onCourseAddHandler} />
-                }
-                {
-                    this.props.courses.map(course => {
-                        if (!isEmpty(fAuth) || !course.invisible) {
-                            return <CourseListItem action={toggleCourse} key={course.id} {...course} />
-                        }
-                    })
-                }
-            </ListGroup>
+            [
+                !isEmpty(fAuth) && <CourseAdd key='1' onClick={this.onCourseAddHandler} />,
+                <ListGroup key='2'>
+                    {
+                        this.props.courses.map(course => {
+                            if (!isEmpty(fAuth) || !course.invisible) {
+                                return <CourseListItem action={toggleCourse} key={course.id} {...course} />
+                            }
+                        })
+                    }
+                </ListGroup>
+            ]
         )
     }
 }

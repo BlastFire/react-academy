@@ -21,13 +21,11 @@ const CourseListItem = ({ id, name, invisible, history, match, action, firebase,
 
     return (
         <ListGroupItem onClick={() => history.push(`${match.url}/${id}`)}>
-            <div className="Course-ListItem">
-                {name}
+            {name}
                 {
-                    !isEmpty(auth) &&
-                    <Button className="floatRight " color="info" onClick={onClick}>{invisible ? "Show" : "Hide"}</Button>
-                }
-            </div>
+                !isEmpty(auth) &&
+                <Button className="floatRight " color="info" onClick={onClick}>{invisible ? "Show" : "Hide"}</Button>
+            }
         </ListGroupItem>
     )
 }

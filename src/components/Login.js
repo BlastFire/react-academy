@@ -1,34 +1,58 @@
-import React, { Component } from 'react'
-import { Button } from 'reactstrap';
-import { connect } from 'react-redux'
+import React from 'react'
 import { compose } from 'redux'
-import { withFirebase } from 'react-redux-firebase'
-import { withRouter } from 'react-router'
+import { connect } from 'react-redux'
+import { Field, reduxForm } from 'redux-form'
+import { withFirebase, isEmpty, firebaseConnect } from 'react-redux-firebase'
+import { withRouter } from 'react-router';
+import { Col, Button, Form, FormGroup, Label, Input, Container } from 'reactstrap'
+import { CommonInput } from './helpers/CommonInput'
+import UserAlreadyIn from './UserAlreadyIn'
 
+const Login = props => {
 
-class Login extends Component {
+    const { handleSubmit, firebase, history, auth } = props
 
-  //redirect to home after successful submit
-  componentWillReceiveProps({ history }) {
-    history.push(`/`)
-  }
+    const login = (data) => {
+        //login with firebase
+        firebase.login(data).then(response => {
+            history.push(`/`)
+        }, error => console.log(`Oops: ${error}`))
+    }
 
-  render() {
+    if (!isEmpty(auth)) return (<UserAlreadyIn text="authorized" />)
+
     return (
-      <div>
-        {/* <GoogleButton/> button can be used instead */}
-        <Button
-          onClick={() => this.props.firebase.login({ provider: 'google', type: 'popup' })}
-        >Login With Google</Button>
-      </div>
+        <Container style={{paddingTop: '20px'}}>
+            <Form>
+                <FormGroup row>
+                    <Label for="exampleEmail" sm={2}>Email</Label>
+                    <Col sm={5}>
+                        <Field component={CommonInput} type="email" name="email" placeholder="Email to login you with" />
+                    </Col>
+                </FormGroup>
+                <FormGroup row>
+                    <Label for="examplePassword" sm={2}>Password</Label>
+                    <Col sm={5}>
+                        <Field component={CommonInput} type="password" name="password" placeholder="Your password" />
+                    </Col>
+                </FormGroup>
+                <FormGroup row>
+                    <Col sm={{ size: 5, offset: 2 }}>
+                        <Button type="submit" onClick={handleSubmit(data => login(data))}>Login</Button>
+                    </Col>
+                </FormGroup>
+            </Form>
+        </Container>
     )
-  }
 }
 
 export default compose(
-  connect(
-    ({ firebase: { auth } }) => ({ auth })
-  ),
-  withRouter,
-  withFirebase
+    withRouter,
+    firebaseConnect(),
+    reduxForm({
+        form: 'loginForm'
+    }),
+    connect(
+        ({ firebase: { auth } }) => ({ auth })
+    )
 )(Login)
