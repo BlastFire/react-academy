@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { withFirebase } from 'react-redux-firebase'
+import { firebaseConnect } from 'react-redux-firebase'
 import { withRouter } from 'react-router'
 
 class Logout extends Component {
@@ -17,7 +17,7 @@ class Logout extends Component {
 }
 
 export default compose(
-    withFirebase,
+    firebaseConnect(),
     withRouter,
     connect(
         ({ firebase: { auth } }) => ({ auth })

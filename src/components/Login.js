@@ -1,14 +1,16 @@
 import React from 'react'
 import { compose } from 'redux'
+import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { withFirebase } from 'react-redux-firebase'
+import { withFirebase, isEmpty, firebaseConnect } from 'react-redux-firebase'
+import { withRouter } from 'react-router';
 import { Col, Button, Form, FormGroup, Label, Input, Container } from 'reactstrap'
 import { CommonInput } from './helpers/CommonInput'
-import { withRouter } from 'react-router';
+import UserAlreadyIn from './UserAlreadyIn'
 
 const Login = props => {
 
-    const { handleSubmit, firebase, history } = props
+    const { handleSubmit, firebase, history, auth } = props
 
     const login = (data) => {
         //login with firebase
@@ -17,13 +19,15 @@ const Login = props => {
         }, error => console.log(`Oops: ${error}`))
     }
 
+    if (!isEmpty(auth)) return (<UserAlreadyIn text="authorized" />)
+
     return (
-        <Container>
+        <Container style={{paddingTop: '20px'}}>
             <Form>
                 <FormGroup row>
                     <Label for="exampleEmail" sm={2}>Email</Label>
                     <Col sm={5}>
-                        <Field component={CommonInput} type="email" name="email" placeholder="Email to register you with" />
+                        <Field component={CommonInput} type="email" name="email" placeholder="Email to login you with" />
                     </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -44,8 +48,11 @@ const Login = props => {
 
 export default compose(
     withRouter,
-    withFirebase,
+    firebaseConnect(),
     reduxForm({
         form: 'loginForm'
-    })
+    }),
+    connect(
+        ({ firebase: { auth } }) => ({ auth })
+    )
 )(Login)
