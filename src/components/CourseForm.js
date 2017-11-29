@@ -108,13 +108,15 @@ class CourseForm extends Component {
     }
 }
 
-export default compose(
-    connect(
-        state => ({ languageConfig: state.crs.configCourse.languages }),
-        { fetchConfigLanguages, addCourse }
-    ),
-    withRouter,
-    reduxForm({
-        form: 'courseForm'
-    })
-)(CourseForm)
+// export default compose(
+//     connect(
+//         state => ({ languageConfig: state.crs.configCourse.languages }),
+//         { fetchConfigLanguages, addCourse }
+//     ),
+//     withRouter,
+//     reduxForm({
+//         form: 'courseForm'
+//     })
+// )(CourseForm)
+
+export default CourseForm
