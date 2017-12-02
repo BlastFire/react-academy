@@ -5,23 +5,26 @@ import './css/Courses.css'
 import CourseList from './CourseList'
 import DisplayCourse from './DisplayCourse'
 import CourseForm from './CourseForm'
-import CourseFormEdit from './CourseFormEdit'
 import CourseDescription from './CourseDescription'
-import Formichka from './Formichka'
+import CourseFormContainer from './CourseFormContainer'
 
 const Courses = ({ match }) => {
 
     return (
         <div className='Courses'>
-            <Container style={{padding: '5px'}}>
+            <Container style={{ padding: '5px' }}>
                 <Row>
                     <Col xs="3">
                         <CourseList />
                     </Col>
                     <Col xs="9">
                         <Switch>
-                            <Route exact path="/courses/add" component={Formichka} />
-                            <Route exact path={`${match.url}/:courseId/edit`} component={CourseFormEdit} />
+                            <Route exact path="/courses/add" render={props => (
+                                <CourseFormContainer {...props} edit={false} />
+                            )} />
+                            <Route exact path={`${match.url}/:courseId/edit`} render={props => (
+                                <CourseFormContainer {...props} edit={true} />
+                            )} />
                             <Route path={`${match.url}/:courseId`} render={({ match }) => (
                                 <DisplayCourse courseId={match.params.courseId} />
                             )} />
