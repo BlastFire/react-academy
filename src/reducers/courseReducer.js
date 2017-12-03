@@ -172,6 +172,10 @@ export const ping = () => ({ type: "PING" })
 //THE REDUCER FUNCTION
 export default (state = initState, action) => {
     switch (action.type) {
+        case "PING":
+            return state
+        case "PONG":
+            return state
         case COURSE_TOGGLE:
             return {
                 ...state, courses: [...state.courses.map((course) => {
