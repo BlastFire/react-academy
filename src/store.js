@@ -2,10 +2,12 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 import { reducer as formReducer } from 'redux-form'
+import { createEpicMiddleware } from 'redux-observable'
 import { reactReduxFirebase, firebaseStateReducer, getFirebase } from 'react-redux-firebase'
+import firebase from 'firebase'
 import testReducer from './reducers/testreducer'
 import courseReducer from './reducers/courseReducer'
-import firebase from 'firebase'
+import { rootEpic } from './epics/root';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBqzVnkfm3XDKx_9qwm_usuOgtqAmQXMjU",
@@ -24,12 +26,13 @@ const reduxFirebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
+const epicMiddleware = createEpicMiddleware(rootEpic)
+
 // Add reactReduxFirebase store enhancer
 const createStoreWithFirebase = compose(
-    reactReduxFirebase(firebase, reduxFirebaseConfig),
+    reactReduxFirebase(firebase, reduxFirebaseConfig)
 )(createStore)
 
-//const store = createStore(rootReducer, compose(reactReduxFirebase(firebaseConfig, reduxFirebase)));
 
 const reducer = combineReducers({
     test: testReducer,
@@ -39,5 +42,7 @@ const reducer = combineReducers({
 })
 
 export default createStoreWithFirebase(reducer,
-    composeWithDevTools(applyMiddleware(thunk.withExtraArgument(getFirebase)))
+    composeWithDevTools(applyMiddleware(thunk.withExtraArgument(getFirebase), epicMiddleware))
 )
+
+//const store = createStore(rootReducer, compose(reactReduxFirebase(firebaseConfig, reduxFirebase)));

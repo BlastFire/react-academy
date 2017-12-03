@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
-import { Field, reduxForm } from 'redux-form'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
+import { Field } from 'redux-form'
 import { Col, Form, FormGroup, Label } from 'reactstrap'
-import { withRouter } from 'react-router-dom'
 import { CommonInput } from './helpers/CommonInput'
-import { StarInput } from './helpers/StarInput'
 import { vRequired, vMaxLength, vEmail } from '../Validators/CommonValidators'
-import { fetchConfigLanguages, addCourse } from '../reducers/courseReducer'
 import StarsComponent from './FormComponents/StarComponent'
 
 //validation setup
@@ -23,12 +18,12 @@ class CourseForm extends Component {
     }
 
     render() {
-        const { handleSubmit, languageConfig, history } = this.props
+        const { handleSubmit, languageConfig, history, edit } = this.props
 
         const redirectCb = () => history.push('/courses')
         return (
             <div>
-                <h2> Adding a course </h2>
+                <h2>{edit ? "Editing a course" : "Adding a course"}</h2>
                 <Form>
                     <FormGroup row>
                         <Label for="name" sm={2}>Course Name</Label>
@@ -100,21 +95,12 @@ class CourseForm extends Component {
                     </FormGroup>
                     <button className="btn btn-primary"
                         onClick={handleSubmit(data =>
-                            this.props.addCourse({ course: data, redirectCb }))}
-                        type="submit">Submit</button>
+                            this.props.handleData({ course: data, redirectCb }))}
+                        type="submit">{edit ? "Save": "Submit"}</button>
                 </Form>
             </div >
         )
     }
 }
 
-export default compose(
-    connect(
-        state => ({ languageConfig: state.crs.configCourse.languages }),
-        { fetchConfigLanguages, addCourse }
-    ),
-    withRouter,
-    reduxForm({
-        form: 'courseForm'
-    })
-)(CourseForm)
+export default CourseForm
