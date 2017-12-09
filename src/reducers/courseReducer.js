@@ -17,6 +17,8 @@ const DELETE_COURSE = 'DELETE_COURSE'
 const COURSE_EDIT = 'COURSE_EDIT'
 const COURSES_TOP5 = 'COURSES_TOP5'
 const COURSE_TOGGLE = 'COURSE_TOGGLE'
+const LOADING = 'LOADING'
+const LOADED = 'LOADED'
 
 const loadCoursesA = courses => ({ type: COURSES_LOAD, payload: courses })
 const loadConfigLanguagesA = langs => ({ type: CONFIG_LANGUAGE_LOAD, payload: langs })
@@ -24,6 +26,9 @@ const addCourseA = course => ({ type: COURSE_ADD, payload: course })
 const deleteCourseA = id => ({ type: DELETE_COURSE, payload: id })
 const editCourseA = course => ({ type: COURSE_EDIT, payload: course })
 const toggleCourseA = id => ({ type: COURSE_TOGGLE, payload: id })
+
+export const loadingA = () => ({ type: LOADING })
+export const loadedA = () => ({ type: LOADED })
 export const top5Courses = (filtered = false) => ({ type: COURSES_TOP5, payload: filtered })
 
 //thunk
@@ -176,6 +181,10 @@ export default (state = initState, action) => {
             return state
         case "PONG":
             return state
+        case LOADING:
+            return { ...state, loading: true }
+        case LOADED:
+            return { ...state, loading: false }
         case COURSE_TOGGLE:
             return {
                 ...state, courses: [...state.courses.map((course) => {
