@@ -1,7 +1,5 @@
-4. dont make firebase calls all the time. check in state
 1. fix the bug with double dash in url
-2. refactor edit and add forms for courses ( maybe with HOC )
-3. image listener with js async and wait ?
+2. image listener with js async and wait ?
 
 //README
 withFirebase causes warning with undefined store on some components in React16
