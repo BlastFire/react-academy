@@ -5,7 +5,7 @@ import { compose } from 'redux'
 import { isEmpty } from 'react-redux-firebase'
 import { withRouter } from 'react-router'
 import './App.css';
-import { fetchCourses, ping } from './reducers/courseReducer'
+import { fetchCourses } from './reducers/courseReducer'
 import Header from './components/Header'
 import Home from './components/Home'
 import Courses from './components/Courses'
@@ -19,7 +19,6 @@ class App extends Component {
 
   componentDidMount() {
     this.props.fetchCourses()
-    this.props.ping()
   }
 
   render() {
@@ -46,6 +45,6 @@ export default compose(
   withRouter,
   connect(
     ({ firebase: { auth } }) => ({ auth }),   // eq. (state) => ({auth: state.firebase.auth }),
-    { fetchCourses, ping }
+    { fetchCourses }
   )
 )(App)

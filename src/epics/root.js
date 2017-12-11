@@ -1,17 +1,34 @@
 import { combineEpics } from 'redux-observable';
 import { combineReducers } from 'redux';
 import { getFirebase } from 'react-redux-firebase'
-import 'rxjs'
+import { Observable } from 'rxjs'
+import { loginFulfulledA, loginErrorA, LOGIN, REGISTER, regFulfilledA, regErrorA } from '../reducers/courseReducer'
 
-const pingEpic = (action$, store, getFirebase) =>
-action$.ofType("PING")
-  .delay(1000) // Asynchronously wait 1000ms then continue
-  .mapTo({ type: "PONG" });
+const loginEpic = (action$, store, getFirebase) =>
+  action$.ofType(LOGIN)
+    .switchMap(({ payload }) => {
+      return Observable.fromPromise(getFirebase().login(payload))
+        .map(response => {
+          return loginFulfulledA()
+        })
+        .catch(error => {
+          //errors is fetched from firebase state
+          return Observable.of(loginErrorA(error))
+        })
+    })
+
+const registerEpic = (action$, store, getFirebase) =>
+  action$.ofType(REGISTER)
+    .switchMap(({ payload }) => {
+      return Observable.fromPromise(getFirebase().createUser(payload))
+        .map(response => {
+          return regFulfilledA()
+        })
+        .catch(error => {
+          return Observable.of(regErrorA(error))
+        })
+    })
 
 export const rootEpic = (...args) => {
-  return combineEpics(pingEpic)(...args, getFirebase)
+  return combineEpics(loginEpic, registerEpic)(...args, getFirebase)
 }
-
-// export const rootEpic = combineEpics(
-//     pingEpic
-// );
