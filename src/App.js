@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { isEmpty } from 'react-redux-firebase'
@@ -14,6 +14,16 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import Register from './components/Register'
 import NoMatch from './components/NoMatch'
+
+const RemoveTrailingSlash = ({location}) => {
+  const {pathname} = location;
+	
+  if (pathname.substr(-1) === '/') {
+    return <Redirect to={pathname.substr(0, pathname.length - 1)} />;
+  } else {
+    return null;
+  }
+};
 
 class App extends Component {
 

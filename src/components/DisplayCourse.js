@@ -17,23 +17,12 @@ class DisplayCourse extends Component {
         this.props.fetchConfigLanguages()
     }
 
-    /*
-    IMPORTANT- only this hook will call when props are changed(eg. from link)
-    */
-    componentWillReceiveProps() { }
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps)
+     }
 
     render() {
 
-        /*
-        fixed a problem, when user directly types the route in browser instead of clicking on the navigation "link".
-        In that case, rendering of this component occurs, BEFORE loading the data from storage with redux action creator,
-        leading to "undefined" result from fetchCourse filter method
-        
-        ----render is called twice cuz of that crap----
-
-        TODO: resolve it with proper app design
-        TODO: wrong id, should return error page of some kind
-        */
         if (!this.props.curCourse) {
             return <p>Loading...</p>;
         }

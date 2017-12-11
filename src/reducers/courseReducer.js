@@ -5,6 +5,8 @@ const initState = {
     configCourse: {
         languages: []
     },
+    loading: false,
+    error: null,
     coursesNewest: [],
     coursesUpdated: [],
     coursesMostRating: []
@@ -17,6 +19,13 @@ const DELETE_COURSE = 'DELETE_COURSE'
 const COURSE_EDIT = 'COURSE_EDIT'
 const COURSES_TOP5 = 'COURSES_TOP5'
 const COURSE_TOGGLE = 'COURSE_TOGGLE'
+export const LOGIN = 'LOGIN'
+const LOGIN_FULFILLED = 'LOGIN_FULFILLED'
+const LOGIN_ERROR = 'LOGIN_ERROR'
+export const REGISTER = 'REGISTER'
+const REGISTER_FULFILLED = 'REGISTER_FULFILLED'
+const REGISTER_ERROR = 'REGISTER_ERROR'
+
 
 const loadCoursesA = courses => ({ type: COURSES_LOAD, payload: courses })
 const loadConfigLanguagesA = langs => ({ type: CONFIG_LANGUAGE_LOAD, payload: langs })
@@ -24,6 +33,15 @@ const addCourseA = course => ({ type: COURSE_ADD, payload: course })
 const deleteCourseA = id => ({ type: DELETE_COURSE, payload: id })
 const editCourseA = course => ({ type: COURSE_EDIT, payload: course })
 const toggleCourseA = id => ({ type: COURSE_TOGGLE, payload: id })
+
+export const loginA = (data) => ({ type: LOGIN, payload: data })
+export const loginFulfulledA = () => ({ type: LOGIN_FULFILLED })
+export const loginErrorA = (data) => ({ type: LOGIN_ERROR, payload: data })
+export const regA = (data) => ({ type: REGISTER, payload: data })
+export const regFulfilledA = () => ({ type: REGISTER_FULFILLED })
+export const regErrorA = (data) => ({ type: REGISTER_ERROR, payload: data })
+
+
 export const top5Courses = (filtered = false) => ({ type: COURSES_TOP5, payload: filtered })
 
 //thunk
@@ -167,11 +185,21 @@ export const fetchCourses = () => (dispatch, getState, getFirebase) => {
 //TODO: move it from reducer
 export const fetchCourse = (courses, id) => courses.find(el => el.id === id)
 
-export const ping = () => ({ type: "PING" })
-
 //THE REDUCER FUNCTION
 export default (state = initState, action) => {
     switch (action.type) {
+        case REGISTER:
+            return { ...state, loading: true }
+        case REGISTER_FULFILLED:
+            return { ...state, loading: false }
+        case REGISTER_ERROR:
+            return { ...state, loading: false }
+        case LOGIN:
+            return { ...state, loading: true }
+        case LOGIN_FULFILLED:
+            return { ...state, loading: false }
+        case LOGIN_ERROR:
+            return { ...state, loading: false }
         case COURSE_TOGGLE:
             return {
                 ...state, courses: [...state.courses.map((course) => {
