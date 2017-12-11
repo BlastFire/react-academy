@@ -185,7 +185,6 @@ export const fetchCourses = () => (dispatch, getState, getFirebase) => {
 //TODO: move it from reducer
 export const fetchCourse = (courses, id) => courses.find(el => el.id === id)
 
-
 //THE REDUCER FUNCTION
 export default (state = initState, action) => {
     switch (action.type) {
