@@ -6,25 +6,26 @@ import './css/CourseItem.css'
 import './css/DisplayCourse.css'
 import { withRouter } from 'react-router-dom'
 import { isEmpty } from 'react-redux-firebase'
+import ToggleFlip from './UIComponents/ToggleFlip'
 
 const CourseListItem = ({ id, name, invisible, history, match, action, firebase, auth }) => {
 
-    const onClick = e => {
+    const onClick = () => {
         action(id)
 
         /*
         disable propagation on the click event,
-        so clickin on the button, wont trigger the course list component click event
+        so clicking on the button, wont trigger the course list component click event
         */
-        e.stopPropagation()
+        // e.stopPropagation()
     }
 
     return (
         <ListGroupItem onClick={() => history.push(`${match.url}/${id}`)}>
             {name}
-                {
+            {
                 !isEmpty(auth) &&
-                <Button className="floatRight " color="info" onClick={onClick}>{invisible ? "Show" : "Hide"}</Button>
+                <ToggleFlip className='floatRight' on={!invisible} vtext='Visible' itext='Invisible' onToggle={onClick} />
             }
         </ListGroupItem>
     )

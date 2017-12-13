@@ -35,7 +35,7 @@ const editCourseA = course => ({ type: COURSE_EDIT, payload: course })
 const toggleCourseA = id => ({ type: COURSE_TOGGLE, payload: id })
 
 export const loginA = (data) => ({ type: LOGIN, payload: data })
-export const loginFulfulledA = () => ({ type: LOGIN_FULFILLED })
+export const loginFulfilledA = () => ({ type: LOGIN_FULFILLED })
 export const loginErrorA = (data) => ({ type: LOGIN_ERROR, payload: data })
 export const regA = (data) => ({ type: REGISTER, payload: data })
 export const regFulfilledA = () => ({ type: REGISTER_FULFILLED })

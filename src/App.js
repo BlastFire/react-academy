@@ -14,16 +14,7 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import Register from './components/Register'
 import NoMatch from './components/NoMatch'
-
-const RemoveTrailingSlash = ({location}) => {
-  const {pathname} = location;
-	
-  if (pathname.substr(-1) === '/') {
-    return <Redirect to={pathname.substr(0, pathname.length - 1)} />;
-  } else {
-    return null;
-  }
-};
+import TestComp from './components/TestComp'
 
 class App extends Component {
 
@@ -44,6 +35,7 @@ class App extends Component {
           <Route path="/register" component={Register} />
           <Route path="/logout" component={Logout} />
           <Route path="/top5" component={Top5Courses} />
+          <Route path="/test" component={TestComp} />
           <Route component={NoMatch} />
         </Switch>
       </div >
