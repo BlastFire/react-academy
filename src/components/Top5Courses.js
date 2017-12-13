@@ -10,12 +10,12 @@ import { top5Courses } from '../reducers/courseReducer'
 import { withRouter } from 'react-router-dom';
 
 const CourseCard = props => {
-    const { headerTxt, coursesNewest, history } = props
+    const { headerTxt, source, history } = props
     return (
         <Card>
             <CardHeader>{headerTxt}</CardHeader>
             {
-                coursesNewest.map(course => {
+                source.map(course => {
                     return (
                         <CardBody key={course.id}>
                             <CardTitle>{course.name}</CardTitle>
@@ -38,11 +38,13 @@ class Top5Courses extends Component {
 
     render() {
 
+        const { coursesNewest, coursesUpdated, coursesMostRating } = this.props
+
         return (
             <CardDeck>
-                <CourseCard headerTxt="Top 5 newest courses" {...this.props} />
-                <CourseCard headerTxt="Top 5 updated courses" {...this.props} />
-                <CourseCard headerTxt="Top 5 rated courses" {...this.props} />
+                <CourseCard headerTxt="Top 5 newest courses" source={coursesNewest} />
+                <CourseCard headerTxt="Top 5 updated courses" source={coursesUpdated} />
+                <CourseCard headerTxt="Top 5 rated courses" source={coursesMostRating} />
             </CardDeck>
         )
     }
