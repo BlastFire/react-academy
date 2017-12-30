@@ -18,8 +18,7 @@ class DisplayCourse extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        //console.log(nextProps)
-     }
+    }
 
     render() {
 

@@ -16,6 +16,16 @@ import Register from './components/Register'
 import NoMatch from './components/NoMatch'
 import TestComp from './components/TestComp'
 
+const RemoveTrailingSlash = ({location}) => {
+  const {pathname} = location;
+	
+  if (pathname.substr(-1) === '/') {
+    return <Redirect to={pathname.substr(0, pathname.length - 1)} />;
+  } else {
+    return null;
+  }
+};
+
 class App extends Component {
 
   componentDidMount() {
