@@ -14,6 +14,7 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import Register from './components/Register'
 import NoMatch from './components/NoMatch'
+import TestComp from './components/TestComp'
 
 const RemoveTrailingSlash = ({location}) => {
   const {pathname} = location;
@@ -44,6 +45,7 @@ class App extends Component {
           <Route path="/register" component={Register} />
           <Route path="/logout" component={Logout} />
           <Route path="/top5" component={Top5Courses} />
+          <Route path="/test" component={TestComp} />
           <Route component={NoMatch} />
         </Switch>
       </div >

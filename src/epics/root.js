@@ -2,17 +2,17 @@ import { combineEpics } from 'redux-observable';
 import { combineReducers } from 'redux';
 import { getFirebase } from 'react-redux-firebase'
 import { Observable } from 'rxjs'
-import { loginFulfulledA, loginErrorA, LOGIN, REGISTER, regFulfilledA, regErrorA } from '../reducers/courseReducer'
+import { loginFulfilledA, loginErrorA, LOGIN, REGISTER, regFulfilledA, regErrorA } from '../reducers/courseReducer'
 
 const loginEpic = (action$, store, getFirebase) =>
   action$.ofType(LOGIN)
     .switchMap(({ payload }) => {
       return Observable.fromPromise(getFirebase().login(payload))
         .map(response => {
-          return loginFulfulledA()
+          return loginFulfilledA()
         })
         .catch(error => {
-          //errors is fetched from firebase state
+          //errors are fetched from firebase state
           return Observable.of(loginErrorA(error))
         })
     })

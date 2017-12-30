@@ -9,7 +9,7 @@ import Button from 'react-bootstrap-button-loader'
 import { CommonInput } from './helpers/CommonInput'
 import SimpleErrorComponent from './feedback/SimpleErrorComponent'
 import { vEmail, vMaxLength, vRequired } from '../Validators/CommonValidators'
-import { loginA, loginFulfulledA } from '../reducers/courseReducer'
+import { loginA, loginFulfilledA } from '../reducers/courseReducer'
 
 const vMaxLength15 = vMaxLength(15)
 
@@ -57,7 +57,7 @@ class Login extends Component {
 const mapDispatch = (dispatch) => {
     return {
         login: (data) => dispatch(loginA(data)),
-        loginFulfulledA
+        loginFulfilledA
     }
 }
 
