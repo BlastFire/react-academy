@@ -1,6 +1,3 @@
-1. fix the bug with double dash in url
-2. image listener with js async and wait ?
-
 //README
 withFirebase causes warning with undefined store on some components in React16
 switched to using firebaseConnect for those components ( see Login, Logout, Register)
